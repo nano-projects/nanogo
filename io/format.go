@@ -1,4 +1,6 @@
-package formats
+package io
+
+import "github.com/nano-projects/nanogo/models"
 
 const (
 	XMLNS               = "http://maven.apache.org/POM/4.0.0"
@@ -74,23 +76,23 @@ const (
  * limitations under the License.
  */
  `
-
 )
 
-func GeneralWebapp(groupId string, artifactId string, version string) (pom string) {
+func GeneralWebapp(_arg *models.Argument) (pom string) {
+	arg := *_arg
 	pom = `
     projects:
-      ` + artifactId + `:
+      ` + *arg.ArtifactId + `:
         modelVersion: 4.0.0
         parent:
           groupId: org.nanoframework
           artifactId: super
           version: 5
-        groupId: ` + groupId + `
-        artifactId: ` + artifactId + `
-        version: ` + version + `
+        groupId: ` + *arg.GroupId + `
+        artifactId: ` + *arg.ArtifactId + `
+        version: ` + *arg.Version + `
         packaging: pom
-        name: ` + artifactId + `
+        name: ` + *arg.ArtifactId + `
         url: http://maven.apache.org
         properties:
           project.build.sourceEncoding: UTF-8
@@ -105,28 +107,28 @@ func GeneralWebapp(groupId string, artifactId string, version string) (pom strin
             url: http://10.1.195.225:8081/nexus/content/repositories/snapshots
         modules:
           module:
-            - ` + artifactId + `-common
-            - ` + artifactId + `-mapper
-            - ` + artifactId + `-core
-            - ` + artifactId + `-webapp-support
-            - ` + artifactId + `-webapp
+            - ` + *arg.ArtifactId + `-common
+            - ` + *arg.ArtifactId + `-mapper
+            - ` + *arg.ArtifactId + `-core
+            - ` + *arg.ArtifactId + `-webapp-support
+            - ` + *arg.ArtifactId + `-webapp
         dependencyManagement:
           dependencies:
             dependency:
-              - groupId: ` + groupId + `
-                artifactId: ` + artifactId + `-common
+              - groupId: ` + *arg.GroupId + `
+                artifactId: ` + *arg.ArtifactId + `-common
                 version: ${project.version}
-              - groupId: ` + groupId + `
-                artifactId: ` + artifactId + `-mapper
+              - groupId: ` + *arg.GroupId + `
+                artifactId: ` + *arg.ArtifactId + `-mapper
                 version: ${project.version}
-              - groupId: ` + groupId + `
-                artifactId: ` + artifactId + `-core
+              - groupId: ` + *arg.GroupId + `
+                artifactId: ` + *arg.ArtifactId + `-core
                 version: ${project.version}
-              - groupId: ` + groupId + `
-                artifactId: ` + artifactId + `-webapp-support
+              - groupId: ` + *arg.GroupId + `
+                artifactId: ` + *arg.ArtifactId + `-webapp-support
                 version: ${project.version}
-              - groupId: ` + groupId + `
-                artifactId: ` + artifactId + `-webapp
+              - groupId: ` + *arg.GroupId + `
+                artifactId: ` + *arg.ArtifactId + `-webapp
                 version: ${project.version}
 
         build:
@@ -134,27 +136,21 @@ func GeneralWebapp(groupId string, artifactId string, version string) (pom strin
             plugin:
               - groupId: org.apache.maven.plugins
                 artifactId: maven-compiler-plugin
-              - groupId: org.apache.maven.plugins
-                artifactId: maven-source-plugin
-              - groupId: org.apache.maven.plugins
-                artifactId: maven-javadoc-plugin
-              - groupId: org.codehaus.mojo
-                artifactId: findbugs-maven-plugin
-              - groupId: org.apache.maven.plugins
-                artifactId: maven-checkstyle-plugin
-              - groupId: com.mycila
-                artifactId: license-maven-plugin
-              - groupId: org.apache.maven.plugins
-                artifactId: maven-pmd-plugin
+              ` + appendSourcePlugin(arg.Source) + `
+              ` + appendJavadocPlugin(arg.Javadoc) + `
+              ` + appendFindBugsPlugin(arg.Findbugs) + `
+              ` + appendCheckstylePlugin(arg.Checkstyle) + `
+              ` + appendLicensePlugin(arg.License) + `
+              ` + appendPmdPlugin(arg.Pmd) + `
 
-      ` + artifactId + `-common:
+      ` + *arg.ArtifactId + `-common:
         modelVersion: 4.0.0
         parent:
-          groupId: ` + groupId + `
-          artifactId: ` + artifactId + `
-          version: ` + version + `
-        artifactId: ` + artifactId + `-common
-        name: ` + artifactId + ` Common
+          groupId: ` + *arg.GroupId + `
+          artifactId: ` + *arg.ArtifactId + `
+          version: ` + *arg.Version + `
+        artifactId: ` + *arg.ArtifactId + `-common
+        name: ` + *arg.ArtifactId + ` Common
         url: http://maven.apache.org
         properties:
           cs.dir: ${project.parent.basedir}
@@ -179,14 +175,14 @@ func GeneralWebapp(groupId string, artifactId string, version string) (pom strin
             - groupId: org.nanoframework
               artifactId: nano-commons
 
-      ` + artifactId + `-mapper:
+      ` + *arg.ArtifactId + `-mapper:
         modelVersion: 4.0.0
         parent:
-          groupId: ` + groupId + `
-          artifactId: ` + artifactId + `
-          version: ` + version + `
-        artifactId: ` + artifactId + `-mapper
-        name: ` + artifactId + ` Mapper
+          groupId: ` + *arg.GroupId + `
+          artifactId: ` + *arg.ArtifactId + `
+          version: ` + *arg.Version + `
+        artifactId: ` + *arg.ArtifactId + `-mapper
+        name: ` + *arg.ArtifactId + ` Mapper
         url: http://maven.apache.org
         properties:
           cs.dir: ${project.parent.basedir}
@@ -195,8 +191,8 @@ func GeneralWebapp(groupId string, artifactId string, version string) (pom strin
             - groupId: junit
               artifactId: junit
               scope: test
-            - groupId: ` + groupId + `
-              artifactId: ` + artifactId + `-common
+            - groupId: ` + *arg.GroupId + `
+              artifactId: ` + *arg.ArtifactId + `-common
             - groupId: org.nanoframework
               artifactId: nano-orm-mybatis
             - groupId: mysql
@@ -204,14 +200,14 @@ func GeneralWebapp(groupId string, artifactId string, version string) (pom strin
             - groupId: com.alibaba
               artifactId: druid
 
-      ` + artifactId + `-core:
+      ` + *arg.ArtifactId + `-core:
         modelVersion: 4.0.0
         parent:
-          groupId: ` + groupId + `
-          artifactId: ` + artifactId + `
-          version: ` + version + `
-        artifactId: ` + artifactId + `-core
-        name: ` + artifactId + ` Core
+          groupId: ` + *arg.GroupId + `
+          artifactId: ` + *arg.ArtifactId + `
+          version: ` + *arg.Version + `
+        artifactId: ` + *arg.ArtifactId + `-core
+        name: ` + *arg.ArtifactId + ` Core
         url: http://maven.apache.org
         properties:
           cs.dir: ${project.parent.basedir}
@@ -225,17 +221,17 @@ func GeneralWebapp(groupId string, artifactId string, version string) (pom strin
               scope: provided
             - groupId: org.nanoframework
               artifactId: nano-core
-            - groupId: ` + groupId + `
-              artifactId: ` + artifactId + `-mapper
+            - groupId: ` + *arg.GroupId + `
+              artifactId: ` + *arg.ArtifactId + `-mapper
 
-      ` + artifactId + `-webapp-support:
+      ` + *arg.ArtifactId + `-webapp-support:
         modelVersion: 4.0.0
         parent:
-          groupId: ` + groupId + `
-          artifactId: ` + artifactId + `
-          version: ` + version + `
-        artifactId: ` + artifactId + `-webapp-support
-        name: ` + artifactId + ` Webapp Support
+          groupId: ` + *arg.GroupId + `
+          artifactId: ` + *arg.ArtifactId + `
+          version: ` + *arg.Version + `
+        artifactId: ` + *arg.ArtifactId + `-webapp-support
+        name: ` + *arg.ArtifactId + ` Webapp Support
         url: http://maven.apache.org
         properties:
           cs.dir: ${project.parent.basedir}
@@ -249,18 +245,18 @@ func GeneralWebapp(groupId string, artifactId string, version string) (pom strin
               scope: provided
             - groupId: org.nanoframework
               artifactId: nano-webmvc
-            - groupId: ` + groupId + `
-              artifactId: ` + artifactId + `-core
+            - groupId: ` + *arg.GroupId + `
+              artifactId: ` + *arg.ArtifactId + `-core
 
-      ` + artifactId + `-webapp:
+      ` + *arg.ArtifactId + `-webapp:
         modelVersion: 4.0.0
         moduleType: web
         parent:
-          groupId: ` + groupId + `
-          artifactId: ` + artifactId + `
-          version: ` + version + `
-        artifactId: ` + artifactId + `-webapp
-        name: ` + artifactId + ` Webapp
+          groupId: ` + *arg.GroupId + `
+          artifactId: ` + *arg.ArtifactId + `
+          version: ` + *arg.Version + `
+        artifactId: ` + *arg.ArtifactId + `-webapp
+        name: ` + *arg.ArtifactId + ` Webapp
         url: http://maven.apache.org
         properties:
           cs.dir: ${project.parent.basedir}
@@ -279,10 +275,10 @@ func GeneralWebapp(groupId string, artifactId string, version string) (pom strin
                 exclusion:
                   - groupId: javax.servlet.jsp
                     artifactId: javax.servlet.jsp-api
-            - groupId: ` + groupId + `
-              artifactId: ` + artifactId + `-webapp-support
+            - groupId: ` + *arg.GroupId + `
+              artifactId: ` + *arg.ArtifactId + `-webapp-support
         build:
-          finalName: ` + artifactId + `-webapp
+          finalName: ` + *arg.ArtifactId + `-webapp
           resources:
             resource:
               - directory: src/main/webapp
@@ -354,6 +350,60 @@ func GeneralWebapp(groupId string, artifactId string, version string) (pom strin
     `
 
 	return pom
+}
+
+func appendSourcePlugin(remove *bool) (source string) {
+	if !*remove {
+		source = `- groupId: org.apache.maven.plugins
+                artifactId: maven-source-plugin`
+	}
+
+	return
+}
+
+func appendJavadocPlugin(remove *bool) (javadoc string) {
+	if !*remove {
+		javadoc = `- groupId: org.apache.maven.plugins
+                artifactId: maven-javadoc-plugin`
+	}
+
+	return
+}
+
+func appendFindBugsPlugin(remove *bool) (findbugs string) {
+	if !*remove {
+		findbugs = `- groupId: org.codehaus.mojo
+                artifactId: findbugs-maven-plugin`
+	}
+
+	return
+}
+
+func appendCheckstylePlugin(remove *bool) (checkstyle string) {
+	if !*remove {
+		checkstyle = `- groupId: org.apache.maven.plugins
+                artifactId: maven-checkstyle-plugin`
+	}
+
+	return
+}
+
+func appendLicensePlugin(remove *bool) (license string) {
+	if !*remove {
+		license = `- groupId: com.mycila
+                artifactId: license-maven-plugin`
+	}
+
+	return
+}
+
+func appendPmdPlugin(remove *bool) (pmd string) {
+	if !*remove {
+		pmd = `- groupId: org.apache.maven.plugins
+                artifactId: maven-pmd-plugin`
+	}
+
+	return
 }
 
 func GeneralJettyXml(port string) (jetty string) {

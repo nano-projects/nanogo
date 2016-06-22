@@ -1,5 +1,12 @@
 package models
 
+import (
+	"flag"
+	"os"
+	"log"
+	"strings"
+)
+
 type Licenses struct {
 	License *[]License `yaml:"license,flow" xml:"license,omitempty"`
 }
@@ -102,3 +109,80 @@ type OtherArchives struct {
 	OtherArchive *[]string `yaml:"otherArchive,flow" xml:"otherArchive,omitempty"`
 }
 
+type Argument struct {
+	New *bool
+	NewWebapp *bool
+	NewScheduler *bool
+
+	Path *string
+	Yaml *string
+
+	GroupId *string
+	ArtifactId *string
+	Version *string
+
+	/* Default Webapp or Scheduler General Only */
+	Javadoc *bool
+	Source *bool
+	Checkstyle *bool
+	Findbugs *bool
+	License *bool
+	Pmd *bool
+
+}
+
+func (this *Argument) Parse() {
+	this.New = flag.Bool("new", false, "新建项目")
+	this.NewWebapp = flag.Bool("web", false, "新建基于NanoFramework的Web项目")
+	this.NewScheduler = flag.Bool("scheduler", false, "新建基于NanoFramework的任务调度项目")
+
+	this.Path = flag.String("path", pwd(), "创建项目路径,默认使用当前路径")
+	if !strings.HasSuffix(*this.Path, "/") {
+		path := *this.Path
+		path += "/"
+		this.Path = &path
+	}
+
+	this.Yaml = flag.String("yaml", "", "Yaml配置文件路径")
+
+	this.GroupId = flag.String("groupId", "", "Maven项目的groupId属性")
+	this.ArtifactId = flag.String("artifactId", "", "Maven项目的artifactId属性")
+	this.Version = flag.String("version", "0.0.1", "Maven项目的version属性")
+
+	this.Javadoc = flag.Bool("no-doc", false, "移除插件: maven-javadoc-plugin")
+	this.Source = flag.Bool("no-src", false, "移除插件: maven-source-plugin")
+	this.Checkstyle = flag.Bool("no-chk", false, "移除插件: maven-checkstyle-plugin")
+	this.Findbugs = flag.Bool("no-fb", false, "移除插件: findbugs-maven-plugin")
+	this.License = flag.Bool("no-license", false, "移除插件: license-maven-plugin")
+	this.Pmd = flag.Bool("no-pmd", false, "移除插件: maven-pmd-plugin")
+
+	flag.Parse()
+}
+
+func (this *Argument) Validation() bool {
+	if *this.GroupId == "" || *this.ArtifactId == "" {
+		return false
+	}
+
+	return true
+}
+
+func (this *Argument) ExistYaml() bool {
+	if file, err := os.Open(*this.Path + "/nanogo.yml"); err != nil && os.IsNotExist(err) {
+		log.Fatalf("当前路径下不存在nanogo.yml, 请指定Yaml配置文件的路径或在当前路径下创建文件nanogo.yml")
+		return false
+	} else {
+		defer file.Close()
+		return true
+	}
+}
+
+func pwd() (path string) {
+	if p, err := os.Getwd(); err != nil {
+		panic(err)
+	} else {
+		path = p
+	}
+
+	return
+}

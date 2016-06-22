@@ -9,7 +9,6 @@ import (
 
 type InterfaceMap map[string] interface{}
 
-// StringMap marshals into XML.
 func (this InterfaceMap) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	tokens := []xml.Token{start}
 	for key, value := range this {
@@ -24,7 +23,6 @@ func (this InterfaceMap) MarshalXML(e *xml.Encoder, start xml.StartElement) erro
 		}
 	}
 
-	// flush to ensure tokens are written
 	err := e.Flush()
 	if err != nil {
 		return err
