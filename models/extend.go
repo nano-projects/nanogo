@@ -3,7 +3,6 @@ package models
 import (
 	"flag"
 	"os"
-	"log"
 	"strings"
 )
 
@@ -137,12 +136,6 @@ func (this *Argument) Parse() {
 	this.NewScheduler = flag.Bool("scheduler", false, "新建基于NanoFramework的任务调度项目")
 
 	this.Path = flag.String("path", pwd(), "创建项目路径,默认使用当前路径")
-	if !strings.HasSuffix(*this.Path, "/") {
-		path := *this.Path
-		path += "/"
-		this.Path = &path
-	}
-
 	this.Yaml = flag.String("yaml", "", "Yaml配置文件路径")
 
 	this.GroupId = flag.String("groupId", "", "Maven项目的groupId属性")
@@ -157,6 +150,12 @@ func (this *Argument) Parse() {
 	this.Pmd = flag.Bool("no-pmd", false, "移除插件: maven-pmd-plugin")
 
 	flag.Parse()
+
+	if !strings.HasSuffix(*this.Path, "/") {
+		path := *this.Path
+		path += "/"
+		this.Path = &path
+	}
 }
 
 func (this *Argument) Validation() bool {
@@ -167,9 +166,15 @@ func (this *Argument) Validation() bool {
 	return true
 }
 
-func (this *Argument) ExistYaml() bool {
-	if file, err := os.Open(*this.Path + "/nanogo.yml"); err != nil && os.IsNotExist(err) {
-		log.Fatalf("当前路径下不存在nanogo.yml, 请指定Yaml配置文件的路径或在当前路径下创建文件nanogo.yml")
+func (this *Argument) ExistYaml(yaml *string) bool {
+	var yamlPath string
+	if *yaml == "" {
+		yamlPath = pwd() + "/nanogo.yml"
+	} else {
+		yamlPath = *yaml
+	}
+
+	if file, err := os.Open(yamlPath); err != nil && os.IsNotExist(err) {
 		return false
 	} else {
 		defer file.Close()
