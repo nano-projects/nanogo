@@ -69,15 +69,9 @@ func generalDefault(arg *models.Argument, schema *models.Schema, yml *string) {
 					moduleType = "web"
 				}
 
-				if project.Parent != nil && project.Parent.ArtifactId != "" {
-					absolutePath := *(*arg).Path + project.Parent.ArtifactId + "/" + module
-					mkdir(&absolutePath, arg, &project.GroupId, &project.ArtifactId, &moduleType)
-					writeFile(*(*arg).Path+project.Parent.ArtifactId+"/"+module+"/pom.xml", xml.Header+XML_LICENSE+string(value))
-				} else {
-					absolutePath := *(*arg).Path + project.ArtifactId + "/" + module
-					mkdir(&absolutePath, arg, &project.GroupId, &project.ArtifactId, &moduleType)
-					writeFile(*(*arg).Path+project.ArtifactId+"/"+module+"/pom.xml", xml.Header+XML_LICENSE+string(value))
-				}
+				absolutePath := *(*arg).Path + *(*arg).ArtifactId + "/" + module
+				mkdir(&absolutePath, arg, (*arg).GroupId, (*arg).ArtifactId, &moduleType)
+				writeFile(*(*arg).Path+*(*arg).ArtifactId+"/"+module+"/pom.xml", xml.Header+XML_LICENSE+string(value))
 			}
 		}
 	}

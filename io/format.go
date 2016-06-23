@@ -168,7 +168,6 @@ func GeneralWebapp(_arg *models.Argument) (pom string) {
           groupId: ` + *arg.GroupId + `
           artifactId: ` + *arg.ArtifactId + `
           version: ` + *arg.Version + `
-        groupId: ` + *arg.GroupId + `
         artifactId: ` + *arg.ArtifactId + `-common
         name: ` + *arg.ArtifactId + ` Common
         url: http://maven.apache.org
@@ -201,7 +200,6 @@ func GeneralWebapp(_arg *models.Argument) (pom string) {
           groupId: ` + *arg.GroupId + `
           artifactId: ` + *arg.ArtifactId + `
           version: ` + *arg.Version + `
-        groupId: ` + *arg.GroupId + `
         artifactId: ` + *arg.ArtifactId + `-mapper
         name: ` + *arg.ArtifactId + ` Mapper
         url: http://maven.apache.org
@@ -227,7 +225,6 @@ func GeneralWebapp(_arg *models.Argument) (pom string) {
           groupId: ` + *arg.GroupId + `
           artifactId: ` + *arg.ArtifactId + `
           version: ` + *arg.Version + `
-        groupId: ` + *arg.GroupId + `
         artifactId: ` + *arg.ArtifactId + `-core
         name: ` + *arg.ArtifactId + ` Core
         url: http://maven.apache.org
@@ -252,7 +249,6 @@ func GeneralWebapp(_arg *models.Argument) (pom string) {
           groupId: ` + *arg.GroupId + `
           artifactId: ` + *arg.ArtifactId + `
           version: ` + *arg.Version + `
-        groupId: ` + *arg.GroupId + `
         artifactId: ` + *arg.ArtifactId + `-webapp-support
         name: ` + *arg.ArtifactId + ` Webapp Support
         url: http://maven.apache.org
@@ -278,7 +274,6 @@ func GeneralWebapp(_arg *models.Argument) (pom string) {
           groupId: ` + *arg.GroupId + `
           artifactId: ` + *arg.ArtifactId + `
           version: ` + *arg.Version + `
-        groupId: ` + *arg.GroupId + `
         artifactId: ` + *arg.ArtifactId + `-webapp
         packaging: war
         name: ` + *arg.ArtifactId + ` Webapp
@@ -448,7 +443,6 @@ func GeneralScheduler(_arg *models.Argument) (pom string) {
           groupId: ` + *arg.GroupId + `
           artifactId: ` + *arg.ArtifactId + `
           version: ` + *arg.Version + `
-        groupId: ` + *arg.GroupId + `
         artifactId: ` + *arg.ArtifactId + `-common
         name: ` + *arg.ArtifactId + ` Common
         url: http://maven.apache.org
@@ -481,7 +475,6 @@ func GeneralScheduler(_arg *models.Argument) (pom string) {
           groupId: ` + *arg.GroupId + `
           artifactId: ` + *arg.ArtifactId + `
           version: ` + *arg.Version + `
-        groupId: ` + *arg.GroupId + `
         artifactId: ` + *arg.ArtifactId + `-mapper
         name: ` + *arg.ArtifactId + ` Mapper
         url: http://maven.apache.org
@@ -507,7 +500,6 @@ func GeneralScheduler(_arg *models.Argument) (pom string) {
           groupId: ` + *arg.GroupId + `
           artifactId: ` + *arg.ArtifactId + `
           version: ` + *arg.Version + `
-        groupId: ` + *arg.GroupId + `
         artifactId: ` + *arg.ArtifactId + `-core
         name: ` + *arg.ArtifactId + ` Core
         url: http://maven.apache.org
@@ -532,7 +524,6 @@ func GeneralScheduler(_arg *models.Argument) (pom string) {
           groupId: ` + *arg.GroupId + `
           artifactId: ` + *arg.ArtifactId + `
           version: ` + *arg.Version + `
-        groupId: ` + *arg.GroupId + `
         artifactId: ` + *arg.ArtifactId + `-scheduler-support
         name: ` + *arg.ArtifactId + ` Scheduler Support
         url: http://maven.apache.org
@@ -560,7 +551,6 @@ func GeneralScheduler(_arg *models.Argument) (pom string) {
           groupId: ` + *arg.GroupId + `
           artifactId: ` + *arg.ArtifactId + `
           version: ` + *arg.Version + `
-        groupId: ` + *arg.GroupId + `
         artifactId: ` + *arg.ArtifactId + `-scheduler
         name: ` + *arg.ArtifactId + ` Scheduler
         url: http://maven.apache.org
