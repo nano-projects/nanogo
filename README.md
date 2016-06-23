@@ -3,12 +3,14 @@ NanoGo
 
     NanoGo是基于GO语言开发的一款小工具, 主要为NanoFramework框架项目提供快速的项目构建功能.
     用户可以通过NanoGo快速构建基于NanoFramework的Web项目和Scheduler项目.
+    
+    NanoGo提供了自定义项目构建的方法, 通过编写yaml文件对项目进行定义与编排.(计划中)
 
 下载安装
 ----
 
     前往 https://gobuild.io/nano-projects/nanogo/master 下载二进制包
-    根据自身操作系统选择下载对应的版本, 提供Mac, Linux, Windows等主流操作系统的环境.
+    根据自身操作系统选择对应的版本进行下载, 提供Mac, Linux, Windows等主流操作系统的环境.
     
 配置环境变量
 ------
