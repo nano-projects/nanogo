@@ -12,7 +12,6 @@ import (
 )
 
 func GeneralDefaultWebapp(_arg *models.Argument) {
-	arg := *_arg
 	schema := models.Schema{}
 	yml := GeneralWebapp(_arg)
 	if err := yaml.Unmarshal([]byte(yml), &schema); err != nil {
@@ -20,7 +19,23 @@ func GeneralDefaultWebapp(_arg *models.Argument) {
 		return
 	}
 
-	for module, project := range schema.Projects {
+	generalDefault(_arg, &schema, &yml)
+}
+
+func GeneralDefaultScheduler(_arg *models.Argument) {
+	schema := models.Schema{}
+	yml := GeneralScheduler(_arg)
+	if err := yaml.Unmarshal([]byte(yml), &schema); err != nil {
+		log.Fatalf("error: %v", err)
+		return
+	}
+
+	generalDefault(_arg, &schema, &yml)
+}
+
+func generalDefault(_arg *models.Argument, schema *models.Schema, yml *string) {
+	arg := *_arg
+	for module, project := range (*schema).Projects {
 		project.Xmlns = XMLNS
 		project.XmlnsXsi = XMLNS_XSI
 		project.XsiSchemaLocation = XSI_SCHEMA_LOCATION
@@ -32,10 +47,8 @@ func GeneralDefaultWebapp(_arg *models.Argument) {
 			if module == *arg.ArtifactId {
 				mkdirBase(_arg)
 				path := *arg.Path + *arg.ArtifactId
-				writeFile(path + "/nanogo.yml", yml)
+				writeFile(path + "/src/yml/nanogo.yml", PROPERTIES_LICENSE + *yml)
 				writeFile(path + "/pom.xml", xml.Header + XML_LICENSE + string(value))
-				writeFile(path + "/eclipse-code-template.xml", GeneralCodeTemplates())
-				writeFile(path + "/eclipse-formatter.xml", GeneralEclipseCheckstyle())
 			} else {
 				var moduleType string
 				if project.Packaging == "war" || project.Packaging == "ear" || project.ModuleType == "web" {
@@ -54,6 +67,11 @@ func mkdirBase(_arg *models.Argument) {
 	absolutePath := *arg.Path + *arg.ArtifactId
 
 	os.MkdirAll(absolutePath, 0755)
+	os.MkdirAll(absolutePath + "/src/eclipse", 0755)
+	os.MkdirAll(absolutePath + "/src/yml", 0755)
+
+	writeFile(absolutePath + "/src/eclipse/eclipse-code-template.xml", GeneralCodeTemplates())
+	writeFile(absolutePath + "/src/eclipse/eclipse-formatter.xml", GeneralEclipseCheckstyle())
 
 	writeFile(absolutePath + "/.gitignore", GeneralGitIgnore())
 	if !*arg.Findbugs {
@@ -63,6 +81,12 @@ func mkdirBase(_arg *models.Argument) {
 	if !*arg.Checkstyle {
 		writeFile(absolutePath + "/checkstyle-rules.xml", GeneralCheckstyleRules())
 		writeFile(absolutePath + "/checkstyle-suppressions.xml", GeneralCheckstyleSuppressions())
+	}
+
+	if !*arg.License {
+		os.MkdirAll(absolutePath + "/src/licensing", 0755)
+		writeFile(absolutePath + "/src/licensing/header-definitions.xml", GeneralLicenseHeaderDefinitions())
+		writeFile(absolutePath + "/src/licensing/header.txt", GeneralLicenseHeader())
 	}
 }
 
@@ -93,7 +117,15 @@ func mkdir(absolutePath string, arg *models.Argument, moduleType string) {
 		writeFile(absolutePath + "/bin/bootstrap.sh", GeneralBootstrapShell(newGroupId, newArtifactId))
 		writeFile(absolutePath + "/src/main/java" + pack + "/Bootstrap.java", GeneralBootstrap(newGroupId, newArtifactId))
 		writeFile(absolutePath + "/src/main/resources/assembly.xml", GeneralAssembly())
-		writeFile(absolutePath + "/src/main/resources/context.properties", GeneralContext(newGroupId, newArtifactId))
+
+		if *arg.NewWebapp {
+			writeFile(absolutePath + "/src/main/resources/context.properties", GeneralWebappContext(newGroupId, newArtifactId))
+		}
+
+		if *arg.NewScheduler {
+			writeFile(absolutePath + "/src/main/resources/context.properties", GeneralSchedulerContext(newGroupId, newArtifactId))
+		}
+
 		writeFile(absolutePath + "/src/main/webapp/WEB-INF/jetty.xml", GeneralJettyXml(*arg.Port))
 		writeFile(absolutePath + "/src/main/webapp/WEB-INF/web.xml", GeneralWebXml(*arg.ArtifactId))
 		writeFile(absolutePath + "/src/main/webapp/WEB-INF/webdefault.xml", GeneralWebDefaultXml())

@@ -53,7 +53,7 @@ func NewWebapp(arg *models.Argument) {
 
 func NewScheduler(arg *models.Argument) {
 	if arg.Validation() {
-
+		io.GeneralDefaultScheduler(arg)
 	} else {
 		fmt.Println("必须指定Repository, 例如: -resp org.nanoframework:test:0.0.1-SNAPSHOT")
 		return

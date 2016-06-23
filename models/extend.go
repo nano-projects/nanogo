@@ -144,11 +144,8 @@ func (this *Argument) Parse() {
 	this.Path = flag.String("path", pwd(), "创建项目路径,默认使用当前路径")
 	this.Yaml = flag.String("yaml", "", "Yaml配置文件路径")
 
-	parent := flag.String("parent", "org.nanoframework:super:5", "Maven顶级POM依赖, 格式: groupId:artifactId:version")
+	parent := flag.String("parent", "org.nanoframework:super:6", "Maven顶级POM依赖, 格式: groupId:artifactId:version")
 	resp := flag.String("resp", "", "Maven项目资源定义, 格式: groupId:artifactId:version, version为可选项, 默认使用0.0.1")
-	//this.GroupId = flag.String("groupId", "", "Maven项目的groupId属性")
-	//this.ArtifactId = flag.String("artifactId", "", "Maven项目的artifactId属性")
-	//this.Version = flag.String("version", "0.0.1", "Maven项目的version属性")
 
 	this.Javadoc = flag.Bool("no-doc", false, "移除插件: maven-javadoc-plugin")
 	this.Source = flag.Bool("no-src", false, "移除插件: maven-source-plugin")
