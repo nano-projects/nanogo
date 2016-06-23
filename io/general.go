@@ -14,7 +14,8 @@ import (
 func GeneralDefaultWebapp(_arg *models.Argument) {
 	arg := *_arg
 	schema := models.Schema{}
-	if err := yaml.Unmarshal([]byte(GeneralWebapp(_arg)), &schema); err != nil {
+	yml := GeneralWebapp(_arg)
+	if err := yaml.Unmarshal([]byte(yml), &schema); err != nil {
 		log.Fatalf("error: %v", err)
 		return
 	}
@@ -29,32 +30,44 @@ func GeneralDefaultWebapp(_arg *models.Argument) {
 			return
 		} else {
 			if module == *arg.ArtifactId {
-				mkdirBase(*arg.Path + *arg.ArtifactId)
-				writeFile(*arg.Path + *arg.ArtifactId + "/pom.xml", xml.Header + XML_LICENSE + string(value))
+				mkdirBase(_arg)
+				path := *arg.Path + *arg.ArtifactId
+				writeFile(path + "/nanogo.yml", yml)
+				writeFile(path + "/pom.xml", xml.Header + XML_LICENSE + string(value))
+				writeFile(path + "/eclipse-code-template.xml", GeneralCodeTemplates())
+				writeFile(path + "/eclipse-formatter.xml", GeneralEclipseCheckstyle())
 			} else {
 				var moduleType string
 				if project.Packaging == "war" || project.Packaging == "ear" || project.ModuleType == "web" {
 					moduleType = "web"
 				}
 
-				mkdir(*arg.Path + *arg.ArtifactId + "/" + module, *arg.GroupId, *arg.ArtifactId, moduleType)
+				mkdir(*arg.Path + *arg.ArtifactId + "/" + module, _arg, moduleType)
 				writeFile(*arg.Path + *arg.ArtifactId + "/" + module + "/pom.xml", xml.Header + XML_LICENSE + string(value))
 			}
 		}
 	}
 }
 
-func mkdirBase(absolutePath string) {
+func mkdirBase(_arg *models.Argument) {
+	arg := *_arg
+	absolutePath := *arg.Path + *arg.ArtifactId
+
 	os.MkdirAll(absolutePath, 0755)
 
 	writeFile(absolutePath + "/.gitignore", GeneralGitIgnore())
-	writeFile(absolutePath + "/findbugs-rules.xml", GeneralFindBugs())
-	writeFile(absolutePath + "/checkstyle-rules.xml", GeneralCheckstyleRules())
-	writeFile(absolutePath + "/checkstyle-suppressions.xml", GeneralCheckstyleSuppressions())
+	if !*arg.Findbugs {
+		writeFile(absolutePath + "/findbugs-rules.xml", GeneralFindBugs())
+	}
+
+	if !*arg.Checkstyle {
+		writeFile(absolutePath + "/checkstyle-rules.xml", GeneralCheckstyleRules())
+		writeFile(absolutePath + "/checkstyle-suppressions.xml", GeneralCheckstyleSuppressions())
+	}
 }
 
-func mkdir(absolutePath, groupId, artifactId, moduleType string) {
-	pack := "/" + strings.Replace(groupId, ".", "/", -1) + "/" + artifactId
+func mkdir(absolutePath string, arg *models.Argument, moduleType string) {
+	pack := "/" + strings.Replace(strings.Replace(*arg.GroupId, ".", "/", -1), "-", "/", -1) + "/" + strings.Replace(*arg.ArtifactId, "-", "/", -1)
 	os.MkdirAll(absolutePath, 0755)
 	os.MkdirAll(absolutePath + "/src/main/java" + pack, 0755)
 	os.MkdirAll(absolutePath + "/src/main/resources", 0755)
@@ -74,12 +87,15 @@ func mkdir(absolutePath, groupId, artifactId, moduleType string) {
 		os.MkdirAll(absolutePath + "/configure/uat", 0755)
 		os.MkdirAll(absolutePath + "/configure/release", 0755)
 
-		writeFile(absolutePath + "/bin/bootstrap.sh", GeneralBootstrapShell(groupId, artifactId))
-		writeFile(absolutePath + "/src/main/java" + pack + "/Bootstrap.java", GeneralBootstrap(groupId, artifactId))
+		newGroupId := strings.Replace(*arg.GroupId, "-", ".", -1)
+		newArtifactId := strings.Replace(*arg.ArtifactId, "-", ".", -1)
+
+		writeFile(absolutePath + "/bin/bootstrap.sh", GeneralBootstrapShell(newGroupId, newArtifactId))
+		writeFile(absolutePath + "/src/main/java" + pack + "/Bootstrap.java", GeneralBootstrap(newGroupId, newArtifactId))
 		writeFile(absolutePath + "/src/main/resources/assembly.xml", GeneralAssembly())
-		writeFile(absolutePath + "/src/main/resources/context.properties", GeneralContext(groupId, artifactId))
-		writeFile(absolutePath + "/src/main/webapp/WEB-INF/jetty.xml", GeneralJettyXml("8080"))
-		writeFile(absolutePath + "/src/main/webapp/WEB-INF/web.xml", GeneralWebXml(artifactId))
+		writeFile(absolutePath + "/src/main/resources/context.properties", GeneralContext(newGroupId, newArtifactId))
+		writeFile(absolutePath + "/src/main/webapp/WEB-INF/jetty.xml", GeneralJettyXml(*arg.Port))
+		writeFile(absolutePath + "/src/main/webapp/WEB-INF/web.xml", GeneralWebXml(*arg.ArtifactId))
 		writeFile(absolutePath + "/src/main/webapp/WEB-INF/webdefault.xml", GeneralWebDefaultXml())
 		writeFile(absolutePath + "/src/main/webapp/index.jsp", GeneralIndexJsp())
 	}

@@ -6,6 +6,10 @@ import (
 	"fmt"
 )
 
+const (
+	VERSION = "0.0.1"
+)
+
 func main() {
 	arg := models.Argument{}
 	arg.Parse()
@@ -17,7 +21,7 @@ func main() {
 		fmt.Println("必须指定项目类型且只能指定一种项目创建类型, 请使用 -new, -new -web 或 -new -scheduler 创建项目")
 
 	} else if *arg.New && !*arg.NewWebapp && !*arg.NewScheduler {
-		if arg.ExistYaml(arg.Yaml) {
+		if arg.ExistYaml() {
 			New(&arg)
 		} else {
 			if *arg.Yaml == "" {
@@ -43,7 +47,7 @@ func NewWebapp(arg *models.Argument) {
 	if arg.Validation() {
 		io.GeneralDefaultWebapp(arg)
 	} else {
-		fmt.Println("必须指定GroupId和ArtifactId, 例如: -groupId org.nanoframework -artifactId test")
+		fmt.Println("必须指定Repository, 例如: -resp org.nanoframework:test:0.0.1-SNAPSHOT")
 	}
 }
 
@@ -51,7 +55,7 @@ func NewScheduler(arg *models.Argument) {
 	if arg.Validation() {
 
 	} else {
-		fmt.Println("必须指定GroupId和ArtifactId, 例如: -groupId org.nanoframework -artifactId test")
+		fmt.Println("必须指定Repository, 例如: -resp org.nanoframework:test:0.0.1-SNAPSHOT")
 		return
 	}
 }

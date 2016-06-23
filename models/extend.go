@@ -4,6 +4,8 @@ import (
 	"flag"
 	"os"
 	"strings"
+	"bufio"
+	"io"
 )
 
 type Licenses struct {
@@ -116,6 +118,8 @@ type Argument struct {
 	Path *string
 	Yaml *string
 
+	Parent *Parent
+
 	GroupId *string
 	ArtifactId *string
 	Version *string
@@ -128,6 +132,8 @@ type Argument struct {
 	License *bool
 	Pmd *bool
 
+	Port *string
+
 }
 
 func (this *Argument) Parse() {
@@ -138,9 +144,11 @@ func (this *Argument) Parse() {
 	this.Path = flag.String("path", pwd(), "创建项目路径,默认使用当前路径")
 	this.Yaml = flag.String("yaml", "", "Yaml配置文件路径")
 
-	this.GroupId = flag.String("groupId", "", "Maven项目的groupId属性")
-	this.ArtifactId = flag.String("artifactId", "", "Maven项目的artifactId属性")
-	this.Version = flag.String("version", "0.0.1", "Maven项目的version属性")
+	parent := flag.String("parent", "org.nanoframework:super:5", "Maven顶级POM依赖, 格式: groupId:artifactId:version")
+	resp := flag.String("resp", "", "Maven项目资源定义, 格式: groupId:artifactId:version, version为可选项, 默认使用0.0.1")
+	//this.GroupId = flag.String("groupId", "", "Maven项目的groupId属性")
+	//this.ArtifactId = flag.String("artifactId", "", "Maven项目的artifactId属性")
+	//this.Version = flag.String("version", "0.0.1", "Maven项目的version属性")
 
 	this.Javadoc = flag.Bool("no-doc", false, "移除插件: maven-javadoc-plugin")
 	this.Source = flag.Bool("no-src", false, "移除插件: maven-source-plugin")
@@ -149,12 +157,55 @@ func (this *Argument) Parse() {
 	this.License = flag.Bool("no-license", false, "移除插件: license-maven-plugin")
 	this.Pmd = flag.Bool("no-pmd", false, "移除插件: maven-pmd-plugin")
 
+	this.Port = flag.String("port", "7000", "项目默认端口")
+
 	flag.Parse()
 
 	if !strings.HasSuffix(*this.Path, "/") {
 		path := *this.Path
 		path += "/"
 		this.Path = &path
+	}
+
+	if *parent != "" {
+		parents := strings.Split(*parent, ":")
+		parentsLen := len(parents)
+		if parentsLen < 3 {
+			panic("无效的Maven顶级POM资源定义(-parent), 格式: groupId:artifactId:version")
+		}
+
+		p := Parent{}
+		p.GroupId = parents[0]
+		p.ArtifactId = parents[1]
+		p.Version = parents[2]
+		this.Parent = &p
+	}
+
+	defaultVersion := "0.0.1-SNAPSHOT"
+	if *resp != "" {
+		resps := strings.Split(*resp, ":")
+		respsLen := len(resps)
+		if respsLen < 2 {
+			panic("无效的Maven项目资源定义(-resp), 格式: groupId:artifactId:version")
+		} else {
+			this.GroupId = &resps[0]
+			this.ArtifactId = &resps[1]
+			if respsLen > 2 {
+				version := resps[2]
+				if !strings.HasSuffix(version, "-SNAPSHOT") {
+					version += "-SNAPSHOT"
+				}
+
+				this.Version = &version
+			} else {
+				this.Version = &defaultVersion
+			}
+		}
+	} else {
+		empty := ""
+		this.GroupId = &empty
+		this.ArtifactId = &empty
+		this.Version = &defaultVersion
 	}
 }
 
@@ -166,12 +217,12 @@ func (this *Argument) Validation() bool {
 	return true
 }
 
-func (this *Argument) ExistYaml(yaml *string) bool {
+func (this *Argument) ExistYaml() bool {
 	var yamlPath string
-	if *yaml == "" {
+	if *this.Yaml == "" {
 		yamlPath = pwd() + "/nanogo.yml"
 	} else {
-		yamlPath = *yaml
+		yamlPath = *this.Yaml
 	}
 
 	if file, err := os.Open(yamlPath); err != nil && os.IsNotExist(err) {
@@ -180,6 +231,35 @@ func (this *Argument) ExistYaml(yaml *string) bool {
 		defer file.Close()
 		return true
 	}
+}
+
+func (this *Argument) LoadYaml() (pom *string) {
+	var yamlPath string
+	if *this.Yaml == "" {
+		yamlPath = pwd() + "/nanogo.yml"
+	} else {
+		yamlPath = *this.Yaml
+	}
+
+	if file, err := os.Open(yamlPath); err != nil && os.IsNotExist(err) {
+		panic(err)
+	} else {
+		defer file.Close()
+		reader := bufio.NewReader(file)
+
+		data := ""
+		for {
+			if d, err := reader.ReadString('\n'); err == io.EOF {
+				break
+			} else {
+				data += d
+			}
+		}
+
+		pom = &data
+	}
+
+	return
 }
 
 func pwd() (path string) {
