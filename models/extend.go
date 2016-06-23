@@ -1,11 +1,11 @@
 package models
 
 import (
+	"bufio"
 	"flag"
+	"io"
 	"os"
 	"strings"
-	"bufio"
-	"io"
 )
 
 type Licenses struct {
@@ -111,8 +111,8 @@ type OtherArchives struct {
 }
 
 type Argument struct {
-	New *bool
-	NewWebapp *bool
+	New          *bool
+	NewWebapp    *bool
 	NewScheduler *bool
 
 	Path *string
@@ -120,20 +120,19 @@ type Argument struct {
 
 	Parent *Parent
 
-	GroupId *string
+	GroupId    *string
 	ArtifactId *string
-	Version *string
+	Version    *string
 
 	/* Default Webapp or Scheduler General Only */
-	Javadoc *bool
-	Source *bool
+	Javadoc    *bool
+	Source     *bool
 	Checkstyle *bool
-	Findbugs *bool
-	License *bool
-	Pmd *bool
+	Findbugs   *bool
+	License    *bool
+	Pmd        *bool
 
 	Port *string
-
 }
 
 func (this *Argument) Parse() {

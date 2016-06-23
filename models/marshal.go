@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-type InterfaceMap map[string] interface{}
+type InterfaceMap map[string]interface{}
 
 func (this InterfaceMap) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	tokens := []xml.Token{start}
@@ -45,7 +45,7 @@ func (this InterfaceMap) switchValue(tokens *[]xml.Token, key string, value *int
 	case uint64:
 		*tokens = append(*tokens, t, xml.CharData(strconv.FormatUint(val, 10)), t.End())
 
-	case map[interface{}] interface{}:
+	case map[interface{}]interface{}:
 		*tokens = append(*tokens, t)
 		for k, v := range val {
 			this.switchValue(tokens, k.(string), &v)

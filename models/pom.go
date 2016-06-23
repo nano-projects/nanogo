@@ -4,7 +4,7 @@ type Schema struct {
 	Root string `yaml:"root" xml:"-"`
 	// The <code>&lt;project&gt;</code> element is the root of the descriptor. The following table lists all of the possible child elements.
 	// @version 3.0.0+
-	Projects map[string] project `yaml:"projects,flow" xml:"projects"`
+	Projects map[string]project `yaml:"projects,flow" xml:"projects"`
 }
 
 func (this *Schema) Project(name string) project {
@@ -127,14 +127,14 @@ type project struct {
 	// Properties that can be used throughout the POM as a substitution, and are used as filters in resources if enabled.
 	// The format is <code>&lt;name&gt;value&lt;/name&gt;</code>.
 	// @version 4.0.0+
-	Properties             InterfaceMap `yaml:"properties,flow" xml:"properties,omitempty"`
+	Properties InterfaceMap `yaml:"properties,flow" xml:"properties,omitempty"`
 
 	// Default dependency information for projects that inherit from this one.
 	// The dependencies in this section are not immediately resolved.
 	// Instead, when a POM derived from this one declares a dependency described by a matching groupId and artifactId,
 	// the version and other values from this section are used for that dependency if they were not already specified.
 	// @version 4.0.0+
-	DependencyManagement   *DependencyManagement `yaml:"dependencyManagement" xml:"dependencyManagement,omitempty"`
+	DependencyManagement *DependencyManagement `yaml:"dependencyManagement" xml:"dependencyManagement,omitempty"`
 
 	// This element describes all of the dependencies associated with a project.
 	// These dependencies are used to construct a classpath for your project during the build process.
@@ -291,7 +291,7 @@ type Site struct {
 type DeploymentRepository struct {
 	// Whether to assign snapshots a unique version comprised of the timestamp and build number, or to use the same version each time
 	// @version 4.0.0+
-	UniqueVersion string /*bool*/ `yaml:"uniqueVersion" xml:"uniqueVersion,omitempty"`
+	UniqueVersion string/*bool*/ `yaml:"uniqueVersion" xml:"uniqueVersion,omitempty"`
 
 	// How to handle downloading of releases from this repository.
 	// @version 4.0.0+
@@ -384,13 +384,13 @@ type Contributor struct {
 	// Each role is described by a <code>role</code> element, the body of which is a role name.
 	// This can also be used to describe the contribution.
 	// @version 3.0.0+
-	Roles      *Roles `yaml:"roles" xml:"roles,omitempty"`
+	Roles *Roles `yaml:"roles" xml:"roles,omitempty"`
 
 	// The timezone the contributor is in.
 	// Typically, this is a number in the range <a href="http://en.wikipedia.org/wiki/UTC%E2%88%9212:00">-12</a> to <a href="http://en.wikipedia.org/wiki/UTC%2B14:00">+14</a>
 	// or a valid time zone id like "America/Montreal" (UTC-05:00) or "Europe/Paris" (UTC+01:00).
 	// @version 3.0.0+
-	Timezone   string `yaml:"timezone" xml:"timezone,omitempty"`
+	Timezone string `yaml:"timezone" xml:"timezone,omitempty"`
 
 	// Properties about the contributor, such as an instant messenger handle.
 	// @version 3.0.0+
@@ -489,27 +489,27 @@ type Notifier struct {
 
 	// Whether to send notifications on error.
 	// @version 4.0.0+
-	SendOnError string /*bool*/ `yaml:"sendOnError" xml:"sendOnError,omitempty"`
+	SendOnError string/*bool*/ `yaml:"sendOnError" xml:"sendOnError,omitempty"`
 
 	// Whether to send notifications on failure.
 	// @version 4.0.0+
-	SendOnFailure string /*bool*/ `yaml:"sendOnFailure" xml:"sendOnFailure,omitempty"`
+	SendOnFailure string/*bool*/ `yaml:"sendOnFailure" xml:"sendOnFailure,omitempty"`
 
 	// Whether to send notifications on success.
 	// @version 4.0.0+
-	SendOnSuccess string /*bool*/ `yaml:"sendOnSuccess" xml:"sendOnSuccess,omitempty"`
+	SendOnSuccess string/*bool*/ `yaml:"sendOnSuccess" xml:"sendOnSuccess,omitempty"`
 
 	// Whether to send notifications on warning.
 	// @version 4.0.0+
-	SendOnWarning string /*bool*/ `yaml:"sendOnWarning" xml:"sendOnWarning,omitempty"`
+	SendOnWarning string/*bool*/ `yaml:"sendOnWarning" xml:"sendOnWarning,omitempty"`
 
 	// <b>Deprecated</b>. Where to send the notification to - eg email address.
 	// @version 4.0.0+
-	Address       string `yaml:"address" xml:"address,omitempty"`
+	Address string `yaml:"address" xml:"address,omitempty"`
 
 	// Extended configuration specific to this notifier goes here.
 	// @version 4.0.0+
-	Configuration InterfaceMap /* *interface{} */ `yaml:"configuration,flow" xml:"configuration,omitempty"`
+	Configuration InterfaceMap/* *interface{} */ `yaml:"configuration,flow" xml:"configuration,omitempty"`
 }
 
 // Modifications to the build process which is activated based on environmental parameters or command line arguments.
@@ -518,7 +518,7 @@ type Profile struct {
 	// The identifier of this build profile.
 	// This is used for command line activation, and identifies profiles to be merged.
 	// @version 4.0.0+
-	Id                     string `yaml:"id" xml:"id,omitempty"`
+	Id string `yaml:"id" xml:"id,omitempty"`
 
 	// The conditional logic which will automatically trigger the inclusion of this profile.
 	// @version 4.0.0+
@@ -541,13 +541,13 @@ type Profile struct {
 	// Properties that can be used throughout the POM as a substitution, and are used as filters in resources if enabled.
 	// The format is <code>&lt;name&gt;value&lt;/name&gt;</code>.
 	// @version 4.0.0+
-	Properties             InterfaceMap `yaml:"properties,flow" xml:"properties,omitempty"`
+	Properties InterfaceMap `yaml:"properties,flow" xml:"properties,omitempty"`
 
 	// Default dependency information for projects that inherit from this one.
 	// The dependencies in this section are not immediately resolved.
 	// Instead, when a POM derived from this one declares a dependency described by a matching groupId and artifactId, the version and other values from this section are used for that dependency if they were not already specified.
 	// @version 4.0.0+
-	DependencyManagement   *DependencyManagement `yaml:"dependencyManagement" xml:"dependencyManagement,omitempty"`
+	DependencyManagement *DependencyManagement `yaml:"dependencyManagement" xml:"dependencyManagement,omitempty"`
 
 	// This element describes all of the dependencies associated with a project.
 	// These dependencies are used to construct a classpath for your project during the build process.
@@ -666,7 +666,7 @@ type Plugin struct {
 	// 		available values are <code>merge</code> (default) and <code>override</code>.
 	// </li> </ul> <p>See <a href="http://maven.apache.org/pom.html#Plugins">POM Reference documentation</a> and <a href="http://plexus.codehaus.org/plexus-utils/apidocs/org/codehaus/plexus/util/xml/Xpp3DomUtils.html">Xpp3DomUtils</a> for more information.</p>
 	// @version 4.0.0+
-	Configuration InterfaceMap /* *interface{} */ `yaml:"configuration,flow" xml:"configuration,omitempty"`
+	Configuration InterfaceMap/* *interface{} */ `yaml:"configuration,flow" xml:"configuration,omitempty"`
 }
 
 // The <code>&lt;dependency&gt;</code> element contains information about a dependency of the project.
@@ -786,7 +786,7 @@ type PluginExecution struct {
 	// 	for more information.
 	// </p>
 	// @version 0.0.0+
-	Configuration InterfaceMap /* *interface{} */ `yaml:"configuration,flow" xml:"configuration,omitempty"`
+	Configuration InterfaceMap/* *interface{} */ `yaml:"configuration,flow" xml:"configuration,omitempty"`
 }
 
 // This element describes all of the classpath resources associated with a project or unit tests.
@@ -886,7 +886,7 @@ type ReportPlugin struct {
 	// 	for more information.
 	// </p>
 	// @version 0.0.0+
-	Configuration InterfaceMap /* *interface{} */ `yaml:"configuration,flow" xml:"configuration,omitempty"`
+	Configuration InterfaceMap/* *interface{} */ `yaml:"configuration,flow" xml:"configuration,omitempty"`
 }
 
 // Represents a set of reports and configuration to be used to generate them.
@@ -894,11 +894,11 @@ type ReportPlugin struct {
 type ReportSet struct {
 	// The unique id for this report set, to be used during POM inheritance and profile injection for merging of report sets.
 	// @version 0.0.0+
-	Id            string `yaml:"id" xml:"id,omitempty"`
+	Id string `yaml:"id" xml:"id,omitempty"`
 
 	// The list of reports from this plugin which should be generated from this set.
 	// @version 4.0.0+
-	Reports       *Reports `yaml:"reports" xml:"reports,omitempty"`
+	Reports *Reports `yaml:"reports" xml:"reports,omitempty"`
 
 	// Whether any configuration should be propagated to child POMs.
 	// Note: While the type of this field is <code>String</code> for technical reasons, the semantic type is actually <code>Boolean</code>.
@@ -919,7 +919,7 @@ type ReportSet struct {
 	// 	for more information.
 	// </p>
 	// @version 0.0.0+
-	Configuration InterfaceMap /* *interface{} */ `yaml:"configuration,flow" xml:"configuration,omitempty"`
+	Configuration InterfaceMap/* *interface{} */ `yaml:"configuration,flow" xml:"configuration,omitempty"`
 }
 
 // The conditions within the build runtime environment which will trigger the automatic inclusion of the build profile.
@@ -928,7 +928,7 @@ type ReportSet struct {
 type Activation struct {
 	// If set to true, this profile will be active unless another profile in this pom is activated using the command line -P option or by one of that profile's activators.
 	// @version 4.0.0+
-	ActiveByDefault string /*bool*/ `yaml:"activeByDefault" xml:"activeByDefault,omitempty"`
+	ActiveByDefault string/*bool*/ `yaml:"activeByDefault" xml:"activeByDefault,omitempty"`
 
 	// Specifies that this profile will be activated when a matching JDK is detected.
 	// For example, <code>1.4</code> only activates on JDKs versioned 1.4, while <code>!1.4</code> matches any JDK that is not version 1.4.
@@ -1192,13 +1192,13 @@ type Developer struct {
 	// Each role is described by a <code>role</code> element, the body of which is a role name.
 	// This can also be used to describe the contribution.
 	// @version 3.0.0+
-	Roles      *Roles `yaml:"roles" xml:"roles,omitempty"`
+	Roles *Roles `yaml:"roles" xml:"roles,omitempty"`
 
 	// The timezone the contributor is in.
 	// Typically, this is a number in the range <a href="http://en.wikipedia.org/wiki/UTC%E2%88%9212:00">-12</a> to <a href="http://en.wikipedia.org/wiki/UTC%2B14:00">+14</a>
 	// or a valid time zone id like "America/Montreal" (UTC-05:00) or "Europe/Paris" (UTC+01:00).
 	// @version 3.0.0+
-	Timezone   string `yaml:"timezone" xml:"timezone,omitempty"`
+	Timezone string `yaml:"timezone" xml:"timezone,omitempty"`
 
 	// Properties about the contributor, such as an instant messenger handle.
 	// @version 3.0.0+
