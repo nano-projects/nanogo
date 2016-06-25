@@ -2246,3 +2246,78 @@ func GeneralLicenseHeaderDefinitions() (definitions string) {
 `
 	return
 }
+
+func GeneralMavenSettings() (settings string) {
+	settings = `<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2015-2016 the original author or authors.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ -->
+
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+	<localRepository>${user.home}/.m2/repository</localRepository>
+	<pluginGroups></pluginGroups>
+    <proxies></proxies>
+	<servers></servers>
+
+    <mirrors>
+        <mirror>
+            <id>local-nexus</id>
+            <mirrorOf>local-nexus</mirrorOf>
+            <name>local-nexus</name>
+            <url>http://10.1.195.225:8081/nexus/content/groups/public</url>
+        </mirror>
+	</mirrors>
+
+    <profiles>
+        <profile>
+            <id>nexus</id>
+            <repositories>
+                <repository>
+                    <id>local-nexus</id>
+                    <url>http://local-nexus</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+        </profile>
+        <profile>
+            <id>jdk-1.8</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <jdk>1.8</jdk>
+            </activation>
+            <properties>
+                <maven.compiler.source>1.8</maven.compiler.source>
+                <maven.compiler.target>1.8</maven.compiler.target>
+                <maven.compiler.compilerVersion>3.1</maven.compiler.compilerVersion>
+            </properties>
+        </profile>
+	</profiles>
+
+    <activeProfiles>
+        <activeProfile>nexus</activeProfile>
+    </activeProfiles>
+</settings>
+`
+
+	return
+}

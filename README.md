@@ -112,6 +112,8 @@ NanoGo
     │   ├── eclipse
     │   │   ├── eclipse-code-template.xml
     │   │   └── eclipse-formatter.xml
+    │   ├── mvn
+    │   │   └── settigs.xml
     │   ├── licensing
     │   │   ├── header-definitions.xml
     │   │   └── header.txt
@@ -170,3 +172,19 @@ NanoGo
             ├── sit/.gitkeep
             ├── uat/.gitkeep
             └── release/.gitkeep
+
+项目导入与启动
+----
+
+#### Maven仓库配置
+    
+    IDE导入maven settings.xml的配置, 配置文件位于项目路径: <ArtifactId>/src/mvn/settings.xml
+    
+#### 项目导入
+
+    使用支持Maven的IDE导入项目
+    
+#### 项目启动
+
+    运行 <ArtifactId>-web/src/main/java/<GroupId package>/<ArtifactId>/Bootstrap.java
+    访问应用: http://localhost:7000/<ArtifactId>

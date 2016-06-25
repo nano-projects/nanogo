@@ -82,10 +82,12 @@ func mkdirBase(arg *models.Argument, artifactId *string) {
 
 	os.MkdirAll(absolutePath, 0755)
 	os.MkdirAll(absolutePath+"/src/eclipse", 0755)
+	os.MkdirAll(absolutePath+"/src/mvn", 0755)
 	os.MkdirAll(absolutePath+"/src/yml", 0755)
 
 	writeFile(absolutePath+"/src/eclipse/eclipse-code-template.xml", GeneralCodeTemplates())
 	writeFile(absolutePath+"/src/eclipse/eclipse-formatter.xml", GeneralEclipseCheckstyle())
+	writeFile(absolutePath+"/src/mvn/settings.xml", GeneralMavenSettings())
 
 	writeFile(absolutePath+"/.gitignore", GeneralGitIgnore())
 	if !*(*arg).Findbugs {
