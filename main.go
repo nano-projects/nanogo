@@ -20,7 +20,6 @@ import (
 	"fmt"
 	"github.com/nano-projects/nanogo/io"
 	"github.com/nano-projects/nanogo/models"
-	"os"
 )
 
 const (
