@@ -99,3 +99,74 @@ NanoGo
     create file:  /Users/yanghe/Works/____Go_Project____/____Workspaces____/test/pom.xml
     ...
     
+##### 项目结构
+
+    <ArtifactId>
+    ├── checkstyle-rules.xml
+    ├── checkstyle-suppressions.xml
+    ├── checkstyle-suppressions.xml
+    ├── findbugs-rules.xml
+    ├── .gitignore
+    ├── pom.xml
+    ├── src
+    │   ├── eclipse
+    │   │   ├── eclipse-code-template.xml
+    │   │   └── eclipse-formatter.xml
+    │   ├── licensing
+    │   │   ├── header-definitions.xml
+    │   │   └── header.txt
+    │   └── yml
+    │       └── nanogo.yml
+    │
+    ├── <ArtifactId>-common
+    │   ├── src/main/java/<GroupID package>/<ArtifactId>/.gitkeep
+    │   ├── src/main/resources/.gitkeep
+    │   ├── src/test/java/<GroupID package>/<ArtifactId>/.gitkeep
+    │   ├── src/test/resources/.gitkeep
+    │   └── pom.xml
+    │
+    ├── <ArtifactId>-mapper
+    │   ├── src/main/java/<GroupID package>/<ArtifactId>/.gitkeep
+    │   ├── src/main/resources/.gitkeep
+    │   ├── src/test/java/<GroupID package>/<ArtifactId>/.gitkeep
+    │   ├── src/test/resources/.gitkeep
+    │   └── pom.xml
+    │
+    ├── <ArtifactId>-core
+    │   ├── src/main/java/<GroupID package>/<ArtifactId>/.gitkeep
+    │   ├── src/main/resources/.gitkeep
+    │   ├── src/test/java/<GroupID package>/<ArtifactId>/.gitkeep
+    │   ├── src/test/resources/.gitkeep
+    │   └── pom.xml
+    │
+    ├── <ArtifactId>-webapp-support [ <ArtifactId>-scheduler-support ]
+    │   ├── src/main/java/<GroupID package>/<ArtifactId>/.gitkeep
+    │   ├── src/main/resources/.gitkeep
+    │   ├── src/test/java/<GroupID package>/<ArtifactId>/.gitkeep
+    │   ├── src/test/resources/.gitkeep
+    │   └── pom.xml
+    │
+    └── <ArtifactId>-webapp [ <ArtifactId>-scheduler ]
+        ├── src/main/java/<GroupID package>/<ArtifactId>
+        │   ├── .gitkeep
+        │   └── Bootstrap.java
+        ├── src/main/resources
+        │   ├── .gitkeep
+        │   ├── assembly.xml
+        │   └── context.properties
+        ├── src/main/webapp
+        │   ├── index.jsp
+        │   └── WEB-INF
+        │       ├── jetty.xml
+        │       ├── web.xml
+        │       └── webdefault.xml
+        ├── src/test/java/<GroupID package>/<ArtifactId>/.gitkeep
+        ├── src/test/resources/.gitkeep
+        ├── pom.xml
+        ├── bin
+        │   └── bootstrap.sh
+        └── configure
+            ├── public/.gitkeep
+            ├── sit/.gitkeep
+            ├── uat/.gitkeep
+            └── release/.gitkeep

@@ -59,8 +59,8 @@ func generalDefault(arg *models.Argument, schema *models.Schema, yml *string) {
 			return
 		} else {
 			if project.ArtifactId == *(*arg).ArtifactId {
-				mkdirBase(arg, &project.ArtifactId)
-				absolutePath := *(*arg).Path + project.ArtifactId
+				mkdirBase(arg, (*arg).ArtifactId)
+				absolutePath := *(*arg).Path + *(*arg).ArtifactId
 				writeFile(absolutePath+"/src/yml/nanogo.yml", PROPERTIES_LICENSE+*yml)
 				writeFile(absolutePath+"/pom.xml", xml.Header+XML_LICENSE+string(value))
 			} else {
