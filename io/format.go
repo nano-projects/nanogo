@@ -275,7 +275,7 @@ func GeneralWebapp(_arg *models.Argument) (pom string) {
           artifactId: ` + *arg.ArtifactId + `
           version: ` + *arg.Version + `
         artifactId: ` + *arg.ArtifactId + `-webapp
-        packaging: war
+        packaging: jar
         name: ` + *arg.ArtifactId + ` Webapp
         url: http://maven.apache.org
         properties:
@@ -552,6 +552,7 @@ func GeneralScheduler(_arg *models.Argument) (pom string) {
           artifactId: ` + *arg.ArtifactId + `
           version: ` + *arg.Version + `
         artifactId: ` + *arg.ArtifactId + `-scheduler
+        packaging: jar
         name: ` + *arg.ArtifactId + ` Scheduler
         url: http://maven.apache.org
         properties:
