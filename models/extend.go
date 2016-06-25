@@ -21,6 +21,8 @@ import (
 	"io"
 	"os"
 	"strings"
+	"fmt"
+	"github.com/qiniu/log"
 )
 
 type Licenses struct {
@@ -126,6 +128,8 @@ type OtherArchives struct {
 }
 
 type Argument struct {
+	SystemVersion *bool
+
 	New          *bool
 	NewWebapp    *bool
 	NewScheduler *bool
@@ -148,9 +152,12 @@ type Argument struct {
 	Pmd        *bool
 
 	Port *string
+
 }
 
 func (this *Argument) Parse() {
+	this.SystemVersion = flag.Bool("v", false, "NanoGo版本")
+
 	this.New = flag.Bool("new", false, "新建项目")
 	this.NewWebapp = flag.Bool("web", false, "新建基于NanoFramework的Web项目")
 	this.NewScheduler = flag.Bool("scheduler", false, "新建基于NanoFramework的任务调度项目")
@@ -182,7 +189,8 @@ func (this *Argument) Parse() {
 		parents := strings.Split(*parent, ":")
 		parentsLen := len(parents)
 		if parentsLen < 3 {
-			panic("无效的Maven顶级POM资源定义(-parent), 格式: groupId:artifactId:version")
+			fmt.Println("无效的Maven顶级POM资源定义(-parent), 格式: groupId:artifactId:version")
+			os.Exit(1)
 		}
 
 		p := Parent{}
@@ -197,7 +205,8 @@ func (this *Argument) Parse() {
 		resps := strings.Split(*resp, ":")
 		respsLen := len(resps)
 		if respsLen < 2 {
-			panic("无效的Maven项目资源定义(-resp), 格式: groupId:artifactId:version")
+			fmt.Println("无效的Maven项目资源定义(-resp), 格式: groupId:artifactId:version")
+			os.Exit(1)
 		} else {
 			this.GroupId = &resps[0]
 			this.ArtifactId = &resps[1]
@@ -253,7 +262,7 @@ func (this *Argument) LoadYaml() (pom *string) {
 	}
 
 	if file, err := os.Open(yamlPath); err != nil && os.IsNotExist(err) {
-		panic(err)
+		log.Fatalf("文件操作异常: ", err)
 	} else {
 		defer file.Close()
 		reader := bufio.NewReader(file)
@@ -275,7 +284,7 @@ func (this *Argument) LoadYaml() (pom *string) {
 
 func pwd() (path string) {
 	if p, err := os.Getwd(); err != nil {
-		panic(err)
+		log.Fatalf("获取当前路径异常: ", err)
 	} else {
 		path = p
 	}

@@ -12,29 +12,34 @@
 	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 	See the License for the specific language governing permissions and
 	limitations under the License.
- */
+*/
 package main
 
 import (
+	"flag"
 	"fmt"
 	"github.com/nano-projects/nanogo/io"
 	"github.com/nano-projects/nanogo/models"
+	"os"
 )
 
 const (
-	VERSION = "0.0.1"
+	VERSION = "0.0.2"
 )
 
 func main() {
 	arg := models.Argument{}
 	arg.Parse()
 
-	if !*arg.NewWebapp && !*arg.NewScheduler && !*arg.New {
-		fmt.Println("必须指定项目类型且只能指定一种项目构建类型, 请使用 -new, -new -web 或 -new -scheduler 创建项目")
+	if *arg.SystemVersion {
+		fmt.Println("NanoGo:", VERSION)
+		return
+	}
 
+	if !*arg.NewWebapp && !*arg.NewScheduler && !*arg.New {
+		flag.Usage()
 	} else if *arg.New && *arg.NewWebapp && *arg.NewScheduler {
 		fmt.Println("必须指定项目类型且只能指定一种项目构建类型, 请使用 -new, -new -web 或 -new -scheduler 创建项目")
-
 	} else if *arg.New && !*arg.NewWebapp && !*arg.NewScheduler {
 		if arg.ExistYaml() {
 			New(&arg)
@@ -47,10 +52,8 @@ func main() {
 		}
 	} else if *arg.New && *arg.NewWebapp && !*arg.NewScheduler {
 		NewWebapp(&arg)
-
 	} else if *arg.New && !*arg.NewWebapp && *arg.NewScheduler {
 		NewScheduler(&arg)
-
 	}
 }
 
