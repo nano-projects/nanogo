@@ -2269,10 +2269,10 @@ func GeneralMavenSettings() (settings string) {
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
 
-	<localRepository>${user.home}/.m2/repository</localRepository>
-	<pluginGroups></pluginGroups>
+    <localRepository>${user.home}/.m2/repository</localRepository>
+    <pluginGroups></pluginGroups>
     <proxies></proxies>
-	<servers></servers>
+    <servers></servers>
 
     <mirrors>
         <mirror>
@@ -2281,7 +2281,7 @@ func GeneralMavenSettings() (settings string) {
             <name>local-nexus</name>
             <url>http://10.1.195.225:8081/nexus/content/groups/public</url>
         </mirror>
-	</mirrors>
+    </mirrors>
 
     <profiles>
         <profile>
@@ -2311,7 +2311,7 @@ func GeneralMavenSettings() (settings string) {
                 <maven.compiler.compilerVersion>3.1</maven.compiler.compilerVersion>
             </properties>
         </profile>
-	</profiles>
+    </profiles>
 
     <activeProfiles>
         <activeProfile>nexus</activeProfile>
