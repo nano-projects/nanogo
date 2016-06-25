@@ -26,6 +26,10 @@ import (
 	"strings"
 )
 
+const (
+	FILE_MODE = 0755
+)
+
 func GeneralDefaultWebapp(_arg *models.Argument) {
 	schema := models.Schema{}
 	yml := GeneralWebapp(_arg)
@@ -80,10 +84,10 @@ func generalDefault(arg *models.Argument, schema *models.Schema, yml *string) {
 func mkdirBase(arg *models.Argument, artifactId *string) {
 	absolutePath := *(*arg).Path + *artifactId
 
-	os.MkdirAll(absolutePath, 0755)
-	os.MkdirAll(absolutePath+"/src/eclipse", 0755)
-	os.MkdirAll(absolutePath+"/src/mvn", 0755)
-	os.MkdirAll(absolutePath+"/src/yml", 0755)
+	os.MkdirAll(absolutePath, FILE_MODE)
+	os.MkdirAll(absolutePath+"/src/eclipse", FILE_MODE)
+	os.MkdirAll(absolutePath+"/src/mvn", FILE_MODE)
+	os.MkdirAll(absolutePath+"/src/yml", FILE_MODE)
 
 	writeFile(absolutePath+"/src/eclipse/eclipse-code-template.xml", GeneralCodeTemplates())
 	writeFile(absolutePath+"/src/eclipse/eclipse-formatter.xml", GeneralEclipseCheckstyle())
@@ -100,7 +104,7 @@ func mkdirBase(arg *models.Argument, artifactId *string) {
 	}
 
 	if !*(*arg).License {
-		os.MkdirAll(absolutePath+"/src/licensing", 0755)
+		os.MkdirAll(absolutePath+"/src/licensing", FILE_MODE)
 		writeFile(absolutePath+"/src/licensing/header-definitions.xml", GeneralLicenseHeaderDefinitions())
 		writeFile(absolutePath+"/src/licensing/header.txt", GeneralLicenseHeader())
 	}
@@ -108,11 +112,11 @@ func mkdirBase(arg *models.Argument, artifactId *string) {
 
 func mkdir(absolutePath *string, arg *models.Argument, groupId *string, artifactId *string, moduleType *string) {
 	pack := "/" + strings.Replace(strings.Replace(*groupId, ".", "/", -1), "-", "/", -1) + "/" + strings.Replace(*artifactId, "-", "/", -1)
-	os.MkdirAll(*absolutePath, 0755)
-	os.MkdirAll(*absolutePath+"/src/main/java"+pack, 0755)
-	os.MkdirAll(*absolutePath+"/src/main/resources", 0755)
-	os.MkdirAll(*absolutePath+"/src/test/java"+pack, 0755)
-	os.MkdirAll(*absolutePath+"/src/test/resources", 0755)
+	os.MkdirAll(*absolutePath, FILE_MODE)
+	os.MkdirAll(*absolutePath+"/src/main/java"+pack, FILE_MODE)
+	os.MkdirAll(*absolutePath+"/src/main/resources", FILE_MODE)
+	os.MkdirAll(*absolutePath+"/src/test/java"+pack, FILE_MODE)
+	os.MkdirAll(*absolutePath+"/src/test/resources", FILE_MODE)
 
 	writeFile(*absolutePath+"/src/main/java"+pack+"/.gitkeep", "")
 	writeFile(*absolutePath+"/src/main/resources/.gitkeep", "")
@@ -120,12 +124,12 @@ func mkdir(absolutePath *string, arg *models.Argument, groupId *string, artifact
 	writeFile(*absolutePath+"/src/test/resources/.gitkeep", "")
 
 	if *moduleType == "web" {
-		os.MkdirAll(*absolutePath+"/src/main/webapp/WEB-INF", 0755)
-		os.MkdirAll(*absolutePath+"/bin", 0755)
-		os.MkdirAll(*absolutePath+"/configure/public", 0755)
-		os.MkdirAll(*absolutePath+"/configure/sit", 0755)
-		os.MkdirAll(*absolutePath+"/configure/uat", 0755)
-		os.MkdirAll(*absolutePath+"/configure/release", 0755)
+		os.MkdirAll(*absolutePath+"/src/main/webapp/WEB-INF", FILE_MODE)
+		os.MkdirAll(*absolutePath+"/bin", FILE_MODE)
+		os.MkdirAll(*absolutePath+"/configure/public", FILE_MODE)
+		os.MkdirAll(*absolutePath+"/configure/sit", FILE_MODE)
+		os.MkdirAll(*absolutePath+"/configure/uat", FILE_MODE)
+		os.MkdirAll(*absolutePath+"/configure/release", FILE_MODE)
 
 		writeFile(*absolutePath+"/configure/public/.gitkeep", "")
 		writeFile(*absolutePath+"/configure/sit/.gitkeep", "")
@@ -156,7 +160,7 @@ func mkdir(absolutePath *string, arg *models.Argument, groupId *string, artifact
 
 func writeFile(fileName, data string) {
 	fmt.Println("create file: ", fileName)
-	outputFile, outputError := os.OpenFile(fileName, os.O_WRONLY|os.O_CREATE, 0755)
+	outputFile, outputError := os.OpenFile(fileName, os.O_WRONLY|os.O_CREATE, FILE_MODE)
 	if outputError != nil {
 		fmt.Printf("An error occurred with file opening or creation\n")
 		return
