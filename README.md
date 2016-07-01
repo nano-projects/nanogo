@@ -85,7 +85,7 @@ NanoGo
 
 ###### e.g. 
     
-    ~$ nanogo -new -web -path /Users/yanghe/Works/____Go_Project____/____Workspaces____ -resp org.nanoframework.nanogo:test:0.0.1
+    ~$ nanogo -new -web -path /Users/yanghe/Works/____Go_Project____/____Workspaces____ -resp org.nanoframework.nanogo:test
     create file:  /Users/yanghe/Works/____Go_Project____/____Workspaces____/test/test-common/pom.xml
     ...
     create file:  /Users/yanghe/Works/____Go_Project____/____Workspaces____/test/test-mapper/pom.xml
