@@ -115,15 +115,6 @@ func GeneralWebapp(_arg *models.Argument) (pom string) {
         url: http://maven.apache.org
         properties:
           project.build.sourceEncoding: UTF-8
-        distributionManagement:
-          repository:
-            id: releases
-            name: Releases
-            url: http://10.1.195.225:8081/nexus/content/repositories/releases
-          snapshotRepository:
-            id: snapshots
-            name: Snapshots
-            url: http://10.1.195.225:8081/nexus/content/repositories/snapshots
         modules:
           module:
             - ` + *arg.ArtifactId + `-common
@@ -390,15 +381,6 @@ func GeneralScheduler(_arg *models.Argument) (pom string) {
         url: http://maven.apache.org
         properties:
           project.build.sourceEncoding: UTF-8
-        distributionManagement:
-          repository:
-            id: releases
-            name: Releases
-            url: http://10.1.195.225:8081/nexus/content/repositories/releases
-          snapshotRepository:
-            id: snapshots
-            name: Snapshots
-            url: http://10.1.195.225:8081/nexus/content/repositories/snapshots
         modules:
           module:
             - ` + *arg.ArtifactId + `-common
