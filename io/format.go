@@ -2264,11 +2264,26 @@ func GeneralMavenSettings() (settings string) {
             <name>local-nexus</name>
             <url>http://10.1.195.225:8081/nexus/content/groups/public</url>
         </mirror>
+        <mirror>
+            <id>oss-snapshots</id>
+            <mirrorOf>oss-snapshots</mirrorOf>
+            <name>oss-snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </mirror>
+        <mirror>
+            <id>oss-releases</id>
+            <mirrorOf>oss-releases</mirrorOf>
+            <name>oss-releases</name>
+            <url>https://oss.sonatype.org/content/repositories/releases</url>
+        </mirror>
     </mirrors>
 
     <profiles>
         <profile>
             <id>nexus</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <repositories>
                 <repository>
                     <id>local-nexus</id>
@@ -2278,6 +2293,42 @@ func GeneralMavenSettings() (settings string) {
                     </releases>
                     <snapshots>
                         <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+        </profile>
+        <profile>
+            <id>oss-snapshots</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>oss-snapshots</id>
+                    <url>http://oss-snapshots</url>
+                    <releases>
+                        <enabled>false</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+        </profile>
+        <profile>
+            <id>oss-releases</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>oss-releases</id>
+                    <url>http://oss-releases</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
                     </snapshots>
                 </repository>
             </repositories>
@@ -2295,10 +2346,6 @@ func GeneralMavenSettings() (settings string) {
             </properties>
         </profile>
     </profiles>
-
-    <activeProfiles>
-        <activeProfile>nexus</activeProfile>
-    </activeProfiles>
 </settings>
 `
 
