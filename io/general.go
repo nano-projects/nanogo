@@ -24,6 +24,7 @@ import (
 	"log"
 	"os"
 	"strings"
+	"github.com/nano-projects/nanogo/resources/license"
 )
 
 const (
@@ -65,8 +66,8 @@ func generalDefault(arg *models.Argument, schema *models.Schema, yml *string) {
 			if project.ArtifactId == *(*arg).ArtifactId {
 				mkdirBase(arg, (*arg).ArtifactId)
 				absolutePath := *(*arg).Path + *(*arg).ArtifactId
-				writeFile(absolutePath+"/src/yml/nanogo.yml", PROPERTIES_LICENSE+*yml)
-				writeFile(absolutePath+"/pom.xml", xml.Header+XML_LICENSE+string(value))
+				writeFile(absolutePath+"/src/yml/nanogo.yml", license.Properties()+*yml)
+				writeFile(absolutePath+"/pom.xml", xml.Header+license.Xml()+string(value))
 			} else {
 				var moduleType string
 				if project.Packaging == "war" || project.Packaging == "ear" || project.ModuleType == "web" {
@@ -75,7 +76,7 @@ func generalDefault(arg *models.Argument, schema *models.Schema, yml *string) {
 
 				absolutePath := *(*arg).Path + *(*arg).ArtifactId + "/" + module
 				mkdir(&absolutePath, arg, (*arg).GroupId, (*arg).ArtifactId, &moduleType)
-				writeFile(*(*arg).Path+*(*arg).ArtifactId+"/"+module+"/pom.xml", xml.Header+XML_LICENSE+string(value))
+				writeFile(*(*arg).Path+*(*arg).ArtifactId+"/"+module+"/pom.xml", xml.Header+license.Xml()+string(value))
 			}
 		}
 	}

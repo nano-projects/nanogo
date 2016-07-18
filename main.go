@@ -56,7 +56,7 @@ func main() {
 	}
 }
 
-func New(_arg *models.Argument) {
+func New(arg *models.Argument) {
 
 }
 
