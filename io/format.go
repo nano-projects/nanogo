@@ -17,7 +17,6 @@ package io
 
 import (
 	"github.com/nano-projects/nanogo/models"
-	"github.com/nano-projects/nanogo/resources"
 	"github.com/nano-projects/nanogo/resources/license"
 )
 
@@ -616,21 +615,6 @@ func appendPmdPlugin(remove *bool) (pmd string) {
 	return
 }
 
-func GeneralJettyXml(port string) (jetty string) {
-	jetty = resources.JettyXml(port)
-	return
-}
-
-func GeneralWebXml(displayName string) (web string) {
-	web = resources.WebXml(displayName)
-	return
-}
-
-func GeneralWebDefaultXml() (webdefault string) {
-	webdefault = resources.WebDefaultXml()
-	return
-}
-
 func GeneralWebappContext(groupId, artifactId string) (context string) {
 	pack := groupId + "." + artifactId + ".component"
 	context = license.Properties() + `
@@ -656,72 +640,5 @@ context.root=/` + artifactId + `
 
 context.scheduler-scan.base-package=` + pack + `
 `
-	return
-}
-
-func GeneralIndexJsp() (index string) {
-	index = resources.IndexJsp()
-	return
-}
-
-func GeneralAssembly() (assembly string) {
-	assembly = resources.Assembly()
-	return
-}
-
-func GeneralBootstrap(groupId, artifactId string) (bootstrap string) {
-	pack := groupId + "." + artifactId
-	bootstrap = resources.BootstrapClass(pack)
-	return
-}
-
-func GeneralBootstrapShell(groupId, artifactId string) (shell string) {
-	bootstrap := groupId + "." + artifactId + ".Bootstrap"
-	shell = resources.Bootstrap(bootstrap)
-	return
-}
-
-func GeneralFindBugs() (findbugs string) {
-	findbugs = resources.Findbugs()
-	return
-}
-
-func GeneralCheckstyleRules() (rules string) {
-	rules = resources.CheckstyleRules()
-	return
-}
-
-func GeneralCheckstyleSuppressions() (suppressions string) {
-	suppressions = resources.CheckstyleSuppressions()
-	return
-}
-
-func GeneralGitIgnore() (ignore string) {
-	ignore = resources.IGNORE
-	return
-}
-
-func GeneralCodeTemplates() (template string) {
-	template = resources.CodeTemplate()
-	return
-}
-
-func GeneralEclipseCheckstyle() (checkstyle string) {
-	checkstyle = resources.CodeStyle()
-	return
-}
-
-func GeneralLicenseHeader() (header string) {
-	header = resources.Header()
-	return
-}
-
-func GeneralLicenseHeaderDefinitions() (definitions string) {
-	definitions = resources.Definitions()
-	return
-}
-
-func GeneralMavenSettings() (settings string) {
-	settings = resources.Settings()
 	return
 }

@@ -12,7 +12,7 @@
 	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 	See the License for the specific language governing permissions and
 	limitations under the License.
- */
+*/
 package io
 
 import (
@@ -20,37 +20,38 @@ import (
 	"encoding/xml"
 	"fmt"
 	"github.com/nano-projects/nanogo/models"
+	"github.com/nano-projects/nanogo/resources"
+	"github.com/nano-projects/nanogo/resources/license"
 	"gopkg.in/yaml.v2"
 	"log"
 	"os"
 	"strings"
-	"github.com/nano-projects/nanogo/resources/license"
 )
 
 const (
 	FILE_MODE = 0755
 )
 
-func GeneralDefaultWebapp(_arg *models.Argument) {
+func GeneralDefaultWebapp(arg *models.Argument) {
 	schema := models.Schema{}
-	yml := GeneralWebapp(_arg)
+	yml := GeneralWebapp(arg)
 	if err := yaml.Unmarshal([]byte(yml), &schema); err != nil {
 		log.Fatalf("error: %v", err)
 		return
 	}
 
-	generalDefault(_arg, &schema, &yml)
+	generalDefault(arg, &schema, &yml)
 }
 
-func GeneralDefaultScheduler(_arg *models.Argument) {
+func GeneralDefaultScheduler(arg *models.Argument) {
 	schema := models.Schema{}
-	yml := GeneralScheduler(_arg)
+	yml := GeneralScheduler(arg)
 	if err := yaml.Unmarshal([]byte(yml), &schema); err != nil {
 		log.Fatalf("error: %v", err)
 		return
 	}
 
-	generalDefault(_arg, &schema, &yml)
+	generalDefault(arg, &schema, &yml)
 }
 
 func generalDefault(arg *models.Argument, schema *models.Schema, yml *string) {
@@ -63,9 +64,12 @@ func generalDefault(arg *models.Argument, schema *models.Schema, yml *string) {
 			log.Fatalf("error: %v", err)
 			return
 		} else {
-			if project.ArtifactId == *(*arg).ArtifactId {
-				mkdirBase(arg, (*arg).ArtifactId)
-				absolutePath := *(*arg).Path + *(*arg).ArtifactId
+			groupId := *(*arg).GroupId
+			artifact := *(*arg).ArtifactId
+			path := *(*arg).Path
+			if project.ArtifactId == artifact {
+				mkdirBase(arg, artifact)
+				absolutePath := path + artifact
 				writeFile(absolutePath+"/src/yml/nanogo.yml", license.Properties()+*yml)
 				writeFile(absolutePath+"/pom.xml", xml.Header+license.Xml()+string(value))
 			} else {
@@ -74,88 +78,87 @@ func generalDefault(arg *models.Argument, schema *models.Schema, yml *string) {
 					moduleType = "web"
 				}
 
-				absolutePath := *(*arg).Path + *(*arg).ArtifactId + "/" + module
-				mkdir(&absolutePath, arg, (*arg).GroupId, (*arg).ArtifactId, &moduleType)
-				writeFile(*(*arg).Path+*(*arg).ArtifactId+"/"+module+"/pom.xml", xml.Header+license.Xml()+string(value))
+				absolutePath := path + artifact + "/" + module
+				mkdir(absolutePath, arg, groupId, artifact, moduleType)
+				writeFile(path+artifact+"/"+module+"/pom.xml", xml.Header+license.Xml()+string(value))
 			}
 		}
 	}
 }
 
-func mkdirBase(arg *models.Argument, artifactId *string) {
-	absolutePath := *(*arg).Path + *artifactId
+func mkdirBase(arg *models.Argument, artifactId string) {
+	absolutePath := *(*arg).Path + artifactId
 
 	os.MkdirAll(absolutePath, FILE_MODE)
 	os.MkdirAll(absolutePath+"/src/eclipse", FILE_MODE)
 	os.MkdirAll(absolutePath+"/src/mvn", FILE_MODE)
 	os.MkdirAll(absolutePath+"/src/yml", FILE_MODE)
 
-	writeFile(absolutePath+"/src/eclipse/eclipse-code-template.xml", GeneralCodeTemplates())
-	writeFile(absolutePath+"/src/eclipse/eclipse-formatter.xml", GeneralEclipseCheckstyle())
-	writeFile(absolutePath+"/src/mvn/settings.xml", GeneralMavenSettings())
+	writeFile(absolutePath+"/src/eclipse/eclipse-code-template.xml", resources.CodeTemplate())
+	writeFile(absolutePath+"/src/eclipse/eclipse-formatter.xml", resources.CodeStyle())
+	writeFile(absolutePath+"/src/mvn/settings.xml", resources.Settings())
 
-	writeFile(absolutePath+"/.gitignore", GeneralGitIgnore())
+	writeFile(absolutePath+"/.gitignore", resources.IGNORE)
 	if !*(*arg).Findbugs {
-		writeFile(absolutePath+"/findbugs-rules.xml", GeneralFindBugs())
+		writeFile(absolutePath+"/findbugs-rules.xml", resources.Findbugs())
 	}
 
 	if !*(*arg).Checkstyle {
-		writeFile(absolutePath+"/checkstyle-rules.xml", GeneralCheckstyleRules())
-		writeFile(absolutePath+"/checkstyle-suppressions.xml", GeneralCheckstyleSuppressions())
+		writeFile(absolutePath+"/checkstyle-rules.xml", resources.CheckstyleRules())
+		writeFile(absolutePath+"/checkstyle-suppressions.xml", resources.CheckstyleSuppressions())
 	}
 
 	if !*(*arg).License {
 		os.MkdirAll(absolutePath+"/src/licensing", FILE_MODE)
-		writeFile(absolutePath+"/src/licensing/header-definitions.xml", GeneralLicenseHeaderDefinitions())
-		writeFile(absolutePath+"/src/licensing/header.txt", GeneralLicenseHeader())
+		writeFile(absolutePath+"/src/licensing/header-definitions.xml", resources.Definitions())
+		writeFile(absolutePath+"/src/licensing/header.txt", resources.Header())
 	}
 }
 
-func mkdir(absolutePath *string, arg *models.Argument, groupId *string, artifactId *string, moduleType *string) {
-	pack := "/" + strings.Replace(strings.Replace(*groupId, ".", "/", -1), "-", "/", -1) + "/" + strings.Replace(*artifactId, "-", "/", -1)
-	os.MkdirAll(*absolutePath, FILE_MODE)
-	os.MkdirAll(*absolutePath+"/src/main/java"+pack, FILE_MODE)
-	os.MkdirAll(*absolutePath+"/src/main/resources", FILE_MODE)
-	os.MkdirAll(*absolutePath+"/src/test/java"+pack, FILE_MODE)
-	os.MkdirAll(*absolutePath+"/src/test/resources", FILE_MODE)
+func mkdir(absolutePath string, arg *models.Argument, groupId string, artifactId string, moduleType string) {
+	pack := "/" + strings.Replace(strings.Replace(groupId, ".", "/", -1), "-", "/", -1) + "/" + strings.Replace(artifactId, "-", "/", -1)
+	os.MkdirAll(absolutePath, FILE_MODE)
+	os.MkdirAll(absolutePath+"/src/main/java"+pack, FILE_MODE)
+	os.MkdirAll(absolutePath+"/src/main/resources", FILE_MODE)
+	os.MkdirAll(absolutePath+"/src/test/java"+pack, FILE_MODE)
+	os.MkdirAll(absolutePath+"/src/test/resources", FILE_MODE)
 
-	writeFile(*absolutePath+"/src/main/java"+pack+"/.gitkeep", "")
-	writeFile(*absolutePath+"/src/main/resources/.gitkeep", "")
-	writeFile(*absolutePath+"/src/test/java"+pack+"/.gitkeep", "")
-	writeFile(*absolutePath+"/src/test/resources/.gitkeep", "")
+	writeFile(absolutePath+"/src/main/java"+pack+"/.gitkeep", "")
+	writeFile(absolutePath+"/src/main/resources/.gitkeep", "")
+	writeFile(absolutePath+"/src/test/java"+pack+"/.gitkeep", "")
+	writeFile(absolutePath+"/src/test/resources/.gitkeep", "")
 
-	if *moduleType == "web" {
-		os.MkdirAll(*absolutePath+"/src/main/webapp/WEB-INF", FILE_MODE)
-		os.MkdirAll(*absolutePath+"/bin", FILE_MODE)
-		os.MkdirAll(*absolutePath+"/configure/public", FILE_MODE)
-		os.MkdirAll(*absolutePath+"/configure/sit", FILE_MODE)
-		os.MkdirAll(*absolutePath+"/configure/uat", FILE_MODE)
-		os.MkdirAll(*absolutePath+"/configure/release", FILE_MODE)
+	if moduleType == "web" {
+		os.MkdirAll(absolutePath+"/src/main/webapp/WEB-INF", FILE_MODE)
+		os.MkdirAll(absolutePath+"/bin", FILE_MODE)
+		os.MkdirAll(absolutePath+"/configure/public", FILE_MODE)
+		os.MkdirAll(absolutePath+"/configure/sit", FILE_MODE)
+		os.MkdirAll(absolutePath+"/configure/uat", FILE_MODE)
+		os.MkdirAll(absolutePath+"/configure/release", FILE_MODE)
 
-		writeFile(*absolutePath+"/configure/public/.gitkeep", "")
-		writeFile(*absolutePath+"/configure/sit/.gitkeep", "")
-		writeFile(*absolutePath+"/configure/uat/.gitkeep", "")
-		writeFile(*absolutePath+"/configure/release/.gitkeep", "")
+		writeFile(absolutePath+"/configure/public/.gitkeep", "")
+		writeFile(absolutePath+"/configure/sit/.gitkeep", "")
+		writeFile(absolutePath+"/configure/uat/.gitkeep", "")
+		writeFile(absolutePath+"/configure/release/.gitkeep", "")
 
-		newGroupId := strings.Replace(*groupId, "-", ".", -1)
-		newArtifactId := strings.Replace(*artifactId, "-", ".", -1)
-
-		writeFile(*absolutePath+"/bin/bootstrap.sh", GeneralBootstrapShell(newGroupId, newArtifactId))
-		writeFile(*absolutePath+"/src/main/java"+pack+"/Bootstrap.java", GeneralBootstrap(newGroupId, newArtifactId))
-		writeFile(*absolutePath+"/src/main/resources/assembly.xml", GeneralAssembly())
+		newGroupId := strings.Replace(groupId, "-", ".", -1)
+		newArtifactId := strings.Replace(artifactId, "-", ".", -1)
+		writeFile(absolutePath+"/bin/bootstrap.sh", resources.Bootstrap(newGroupId + "." + newArtifactId + ".Bootstrap"))
+		writeFile(absolutePath+"/src/main/java"+pack+"/Bootstrap.java", resources.BootstrapClass(newGroupId + "." + newArtifactId))
+		writeFile(absolutePath+"/src/main/resources/assembly.xml", resources.Assembly())
 
 		if *(*arg).NewWebapp {
-			writeFile(*absolutePath+"/src/main/resources/context.properties", GeneralWebappContext(newGroupId, newArtifactId))
+			writeFile(absolutePath+"/src/main/resources/context.properties", GeneralWebappContext(newGroupId, newArtifactId))
 		}
 
 		if *(*arg).NewScheduler {
-			writeFile(*absolutePath+"/src/main/resources/context.properties", GeneralSchedulerContext(newGroupId, newArtifactId))
+			writeFile(absolutePath+"/src/main/resources/context.properties", GeneralSchedulerContext(newGroupId, newArtifactId))
 		}
 
-		writeFile(*absolutePath+"/src/main/webapp/WEB-INF/jetty.xml", GeneralJettyXml(*(*arg).Port))
-		writeFile(*absolutePath+"/src/main/webapp/WEB-INF/web.xml", GeneralWebXml(*artifactId))
-		writeFile(*absolutePath+"/src/main/webapp/WEB-INF/webdefault.xml", GeneralWebDefaultXml())
-		writeFile(*absolutePath+"/src/main/webapp/index.jsp", GeneralIndexJsp())
+		writeFile(absolutePath+"/src/main/webapp/WEB-INF/jetty.xml", resources.JettyXml(*(*arg).Port))
+		writeFile(absolutePath+"/src/main/webapp/WEB-INF/web.xml", resources.WebXml(artifactId))
+		writeFile(absolutePath+"/src/main/webapp/WEB-INF/webdefault.xml", resources.WebDefaultXml())
+		writeFile(absolutePath+"/src/main/webapp/index.jsp", resources.IndexJsp())
 	}
 }
 

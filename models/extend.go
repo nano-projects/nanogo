@@ -25,6 +25,10 @@ import (
 	"github.com/qiniu/log"
 )
 
+const (
+	SNAPSHOT = "-SNAPSHOT"
+)
+
 type Licenses struct {
 	License *[]License `yaml:"license,flow" xml:"license,omitempty"`
 }
@@ -179,6 +183,10 @@ func (this *Argument) Parse() {
 
 	flag.Parse()
 
+	this.parse0(parent, resp)
+}
+
+func (this *Argument) parse0(parent *string, resp *string) {
 	if !strings.HasSuffix(*this.Path, "/") {
 		path := *this.Path
 		path += "/"
@@ -212,8 +220,8 @@ func (this *Argument) Parse() {
 			this.ArtifactId = &resps[1]
 			if respsLen > 2 {
 				version := resps[2]
-				if !strings.HasSuffix(version, "-SNAPSHOT") {
-					version += "-SNAPSHOT"
+				if !strings.HasSuffix(version, SNAPSHOT) {
+					version += SNAPSHOT
 				}
 
 				this.Version = &version
