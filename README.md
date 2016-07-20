@@ -61,7 +61,7 @@ NanoGo
       -no-src
         	移除插件: maven-source-plugin
       -parent string
-        	Maven顶级POM依赖, 格式: groupId:artifactId:version (default "org.nanoframework:super:6")
+        	Maven顶级POM依赖, 格式: groupId:artifactId:version (default "org.nanoframework:super:9")
       -path string
         	创建项目路径,默认使用当前路径 (default "...")
       -port string
