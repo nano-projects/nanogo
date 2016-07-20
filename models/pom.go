@@ -16,7 +16,6 @@
 package models
 
 type Schema struct {
-	Root string `yaml:"root" xml:"-"`
 	// The <code>&lt;project&gt;</code> element is the root of the descriptor. The following table lists all of the possible child elements.
 	// @version 3.0.0+
 	Projects map[string]project `yaml:"projects,flow" xml:"projects"`

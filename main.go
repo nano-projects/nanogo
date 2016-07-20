@@ -23,7 +23,7 @@ import (
 )
 
 const (
-	VERSION = "0.0.3"
+	VERSION = "0.0.4"
 )
 
 func main() {
@@ -57,7 +57,11 @@ func main() {
 }
 
 func New(arg *models.Argument) {
-
+	if arg.Validation() {
+		io.General(arg)
+	} else {
+		fmt.Println("必须指定Repository, 例如: -resp org.nanoframework:test:0.0.1-SNAPSHOT")
+	}
 }
 
 func NewWebapp(arg *models.Argument) {

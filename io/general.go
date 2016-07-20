@@ -26,11 +26,39 @@ import (
 	"log"
 	"os"
 	"strings"
+	"io/ioutil"
 )
 
 const (
 	FILE_MODE = 0755
+	GROUP_ID = "{{GroupId}}"
+	ARTIFACT_ID = "{{ArtifactId}}"
+	VERSION = "{{Version}}"
 )
+
+func General(arg *models.Argument) {
+	yml := readYaml(arg)
+	yml = strings.Replace(yml, GROUP_ID, *(*arg).GroupId, -1)
+	yml = strings.Replace(yml, ARTIFACT_ID, *(*arg).ArtifactId, -1)
+	yml = strings.Replace(yml, VERSION, *(*arg).Version, -1)
+	schema := models.Schema{}
+	if err := yaml.Unmarshal([]byte(yml), &schema); err != nil {
+		log.Fatalf("error: %v", err)
+		return
+	}
+
+	generalDefault(arg, &schema, &yml)
+}
+
+func readYaml(arg *models.Argument) (yaml string) {
+	if bytes, err := ioutil.ReadFile(arg.YamlPath()); err != nil {
+		log.Fatalf("error: %v", err)
+	} else {
+		yaml = string(bytes)
+	}
+
+	return
+}
 
 func GeneralDefaultWebapp(arg *models.Argument) {
 	schema := models.Schema{}
@@ -64,11 +92,10 @@ func generalDefault(arg *models.Argument, schema *models.Schema, yml *string) {
 			log.Fatalf("error: %v", err)
 			return
 		} else {
-			groupId := *(*arg).GroupId
 			artifact := *(*arg).ArtifactId
 			path := *(*arg).Path
 			if project.ArtifactId == artifact {
-				mkdirBase(arg, artifact)
+				mkdirBase(arg)
 				absolutePath := path + artifact
 				writeFile(absolutePath+"/src/yml/nanogo.yml", license.Properties()+*yml)
 				writeFile(absolutePath+"/pom.xml", xml.Header+license.Xml()+string(value))
@@ -79,15 +106,15 @@ func generalDefault(arg *models.Argument, schema *models.Schema, yml *string) {
 				}
 
 				absolutePath := path + artifact + "/" + module
-				mkdir(absolutePath, arg, groupId, artifact, moduleType)
+				mkdir(absolutePath, arg, moduleType)
 				writeFile(path+artifact+"/"+module+"/pom.xml", xml.Header+license.Xml()+string(value))
 			}
 		}
 	}
 }
 
-func mkdirBase(arg *models.Argument, artifactId string) {
-	absolutePath := *(*arg).Path + artifactId
+func mkdirBase(arg *models.Argument) {
+	absolutePath := *(*arg).Path + *(*arg).ArtifactId
 
 	os.MkdirAll(absolutePath, FILE_MODE)
 	os.MkdirAll(absolutePath+"/src/eclipse", FILE_MODE)
@@ -115,8 +142,8 @@ func mkdirBase(arg *models.Argument, artifactId string) {
 	}
 }
 
-func mkdir(absolutePath string, arg *models.Argument, groupId string, artifactId string, moduleType string) {
-	pack := "/" + strings.Replace(strings.Replace(groupId, ".", "/", -1), "-", "/", -1) + "/" + strings.Replace(artifactId, "-", "/", -1)
+func mkdir(absolutePath string, arg *models.Argument, moduleType string) {
+	pack := "/" + strings.Replace(strings.Replace(*(*arg).GroupId, ".", "/", -1), "-", "/", -1) + "/" + strings.Replace(*(*arg).ArtifactId, "-", "/", -1)
 	os.MkdirAll(absolutePath, FILE_MODE)
 	os.MkdirAll(absolutePath+"/src/main/java"+pack, FILE_MODE)
 	os.MkdirAll(absolutePath+"/src/main/resources", FILE_MODE)
@@ -141,22 +168,23 @@ func mkdir(absolutePath string, arg *models.Argument, groupId string, artifactId
 		writeFile(absolutePath+"/configure/uat/.gitkeep", "")
 		writeFile(absolutePath+"/configure/release/.gitkeep", "")
 
-		newGroupId := strings.Replace(groupId, "-", ".", -1)
-		newArtifactId := strings.Replace(artifactId, "-", ".", -1)
+		newGroupId := strings.Replace(*(*arg).GroupId, "-", ".", -1)
+		newArtifactId := strings.Replace(*(*arg).ArtifactId, "-", ".", -1)
 		writeFile(absolutePath+"/bin/bootstrap.sh", resources.Bootstrap(newGroupId + "." + newArtifactId + ".Bootstrap"))
 		writeFile(absolutePath+"/src/main/java"+pack+"/Bootstrap.java", resources.BootstrapClass(newGroupId + "." + newArtifactId))
 		writeFile(absolutePath+"/src/main/resources/assembly.xml", resources.Assembly())
 
+		context := absolutePath+"/src/main/resources/context.properties"
 		if *(*arg).NewWebapp {
-			writeFile(absolutePath+"/src/main/resources/context.properties", GeneralWebappContext(newGroupId, newArtifactId))
-		}
-
-		if *(*arg).NewScheduler {
-			writeFile(absolutePath+"/src/main/resources/context.properties", GeneralSchedulerContext(newGroupId, newArtifactId))
+			writeFile(context, GeneralWebappContext(newGroupId, newArtifactId, *(*arg).Version))
+		} else if *(*arg).NewScheduler {
+			writeFile(context, GeneralSchedulerContext(newGroupId, newArtifactId, *(*arg).Version))
+		} else {
+			writeFile(context, GeneralContext(newGroupId, newArtifactId, *(*arg).Version))
 		}
 
 		writeFile(absolutePath+"/src/main/webapp/WEB-INF/jetty.xml", resources.JettyXml(*(*arg).Port))
-		writeFile(absolutePath+"/src/main/webapp/WEB-INF/web.xml", resources.WebXml(artifactId))
+		writeFile(absolutePath+"/src/main/webapp/WEB-INF/web.xml", resources.WebXml(*(*arg).ArtifactId))
 		writeFile(absolutePath+"/src/main/webapp/WEB-INF/webdefault.xml", resources.WebDefaultXml())
 		writeFile(absolutePath+"/src/main/webapp/index.jsp", resources.IndexJsp())
 	}

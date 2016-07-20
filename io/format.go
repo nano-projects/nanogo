@@ -615,11 +615,17 @@ func appendPmdPlugin(remove *bool) (pmd string) {
 	return
 }
 
-func GeneralWebappContext(groupId, artifactId string) (context string) {
+func GeneralWebappContext(groupId, artifactId, version string) (context string) {
 	pack := groupId + "." + artifactId + ".component"
 	context = license.Properties() + `
 # 组件服务上下文属性文件列表
 context=
+
+# 应用模式, DEV: 开发模式, PROD: 生产模式
+context.mode=DEV
+
+# 版本号
+context.version=`+ version + `
 
 # 服务根
 context.root=/` + artifactId + `
@@ -629,16 +635,39 @@ context.component-scan.base-package=` + pack + `
 	return
 }
 
-func GeneralSchedulerContext(groupId, artifactId string) (context string) {
+func GeneralSchedulerContext(groupId, artifactId, version string) (context string) {
 	pack := groupId + "." + artifactId + ".scheduler"
 	context = license.Properties() + `
 # 组件服务上下文属性文件列表
 context=
 
+# 应用模式, DEV: 开发模式, PROD: 生产模式
+context.mode=DEV
+
+# 版本号
+context.version=`+ version + `
+
 # 服务根
 context.root=/` + artifactId + `
 
 context.scheduler-scan.base-package=` + pack + `
+`
+	return
+}
+
+func GeneralContext(groupId, artifactId, version string) (context string) {
+	context = license.Properties() + `
+# 组件服务上下文属性文件列表
+context=
+
+# 应用模式, DEV: 开发模式, PROD: 生产模式
+context.mode=DEV
+
+# 版本号
+context.version=`+ version + `
+
+# 服务根
+context.root=/` + artifactId + `
 `
 	return
 }

@@ -245,7 +245,7 @@ func (this *Argument) Validation() bool {
 	return true
 }
 
-func (this *Argument) ExistYaml() bool {
+func (this *Argument) YamlPath() string {
 	var yamlPath string
 	if *this.Yaml == "" {
 		yamlPath = pwd() + "/nanogo.yml"
@@ -253,6 +253,11 @@ func (this *Argument) ExistYaml() bool {
 		yamlPath = *this.Yaml
 	}
 
+	return yamlPath;
+}
+
+func (this *Argument) ExistYaml() bool {
+	yamlPath := this.YamlPath()
 	if file, err := os.Open(yamlPath); err != nil && os.IsNotExist(err) {
 		return false
 	} else {
