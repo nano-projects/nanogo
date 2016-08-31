@@ -15,7 +15,6 @@
 package cmd
 
 import (
-	"github.com/Sirupsen/logrus"
 	"github.com/nano-projects/nanogo/initial"
 	"github.com/nano-projects/nanogo/initial/conf"
 	"github.com/nano-projects/nanogo/log"
@@ -31,17 +30,7 @@ import (
 // initCmd represents the new command
 var initCmd = &cobra.Command{
 	Use:   "init",
-	Short: "New a maven project",
-	PersistentPreRun: func(cmd *cobra.Command, _ []string) {
-		logrus.SetOutput(os.Stderr)
-		flag, err := cmd.Flags().GetString("log-level")
-		if err != nil {
-			log.Logger.Fatal(err)
-		}
-
-		level, err := logrus.ParseLevel(flag)
-		logrus.SetLevel(level)
-	},
+	Short: "Init a maven project",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		web, err := cmd.Flags().GetBool("web")
 		if err != nil {
@@ -148,9 +137,8 @@ var initCmd = &cobra.Command{
 
 func init() {
 	RootCmd.AddCommand(initCmd)
-	initCmd.Flags().StringP("log-level", "l", "info", "Log level (options \"debug\", \"info\", \"warn\", \"error\", \"fatal\", \"panic\")")
-	initCmd.Flags().BoolP("web", "w", false, "New a webapp project of nano framework")
-	initCmd.Flags().BoolP("scheduler", "s", false, "New a scheduler project of nano framework")
+	initCmd.Flags().BoolP("web", "w", false, "Init a webapp project of nano framework")
+	initCmd.Flags().BoolP("scheduler", "s", false, "Init a scheduler project of nano framework")
 	initCmd.Flags().String("path", pwd(), "The project path by default using the current path")
 	initCmd.Flags().StringP("template", "t", "", "The project template file path")
 	initCmd.Flags().String("parent", "org.nanoframework:super:0.0.11", `Maven top POM dependency, format: "groupId:artifactId:version"`)
