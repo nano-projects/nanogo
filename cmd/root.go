@@ -12,12 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package main
+package cmd
 
 import (
-	"github.com/nano-projects/nanogo/cmd"
+	"github.com/nano-projects/nanogo/log"
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
-func main() {
-	cmd.Execute()
+var (
+	RootCmd = &cobra.Command{
+		Use:          "nanogo",
+		Short:        "Build a maven project",
+		SilenceUsage: true,
+	}
+)
+
+func Execute() {
+	if err := RootCmd.Execute(); err != nil {
+		log.Logger.Fatal(err)
+	}
+}
+
+func init() {
+	cobra.OnInitialize(initConfig)
+}
+
+func initConfig() {
+	viper.AddConfigPath("$HOME")
+	viper.AutomaticEnv()
 }

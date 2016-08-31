@@ -12,12 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package main
+package template
 
 import (
-	"github.com/nano-projects/nanogo/cmd"
+	"github.com/nano-projects/nanogo/template/license"
+	"text/template"
 )
 
-func main() {
-	cmd.Execute()
+func IndexJsp() (*template.Template, error) {
+	jsp := license.Jsp() + `
+<html>
+<body>
+<h2>Hello World!</h2>
+</body>
+</html>
+`
+
+	return template.New("IndexJsp").Parse(jsp)
 }

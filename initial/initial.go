@@ -12,12 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package main
+package initial
 
 import (
-	"github.com/nano-projects/nanogo/cmd"
+	"github.com/nano-projects/nanogo/initial/conf"
 )
 
-func main() {
-	cmd.Execute()
+type New struct {
+	Conf conf.NewConfig
+	Tmp  conf.TmpConfig
+}
+
+func (n *New) Run() error {
+	if err := n.Conf.Valid(); err != nil {
+		return err
+	}
+
+	exec, err := WithExecutor(n)
+	if err != nil {
+		return err
+	}
+
+	return exec.Exec()
 }

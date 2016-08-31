@@ -12,12 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package main
+package cmd
 
 import (
-	"github.com/nano-projects/nanogo/cmd"
+	"github.com/nano-projects/nanogo/version"
+	"github.com/spf13/cobra"
+	"os"
 )
 
-func main() {
-	cmd.Execute()
+// versionCmd represents the version command
+var versionCmd = &cobra.Command{
+	Use:   "version",
+	Short: "Display the version",
+	Run: func(cmd *cobra.Command, args []string) {
+		version.PrintVersion()
+		os.Exit(0)
+	},
+}
+
+func init() {
+	RootCmd.AddCommand(versionCmd)
 }

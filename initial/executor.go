@@ -12,12 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package main
+package initial
 
-import (
-	"github.com/nano-projects/nanogo/cmd"
-)
+type Executor interface {
+	Exec() error
+}
 
-func main() {
-	cmd.Execute()
+func WithExecutor(n *New) (Executor, error) {
+	if n.Conf.Web {
+		return &ExecutorWebapp{n}, nil
+	}
+
+	if n.Conf.Scheduler {
+		return &ExecutorScheduler{&ExecutorWebapp{n}, n}, nil
+	}
+
+	return &ExecutorYml{&ExecutorWebapp{n}, n}, nil
 }

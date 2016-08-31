@@ -45,47 +45,49 @@ NanoGo
 ##### 查看帮助信息
     
     ~$ nanogo -h
-    Usage of nanogo:
-      -new
-        	新建项目
-      -no-chk
-        	移除插件: maven-checkstyle-plugin
-      -no-doc
-        	移除插件: maven-javadoc-plugin
-      -no-fb
-        	移除插件: findbugs-maven-plugin
-      -no-license
-        	移除插件: license-maven-plugin
-      -no-pmd
-        	移除插件: maven-pmd-plugin
-      -no-src
-        	移除插件: maven-source-plugin
-      -parent string
-        	Maven顶级POM依赖, 格式: groupId:artifactId:version (default "org.nanoframework:super:9")
-      -path string
-        	创建项目路径,默认使用当前路径 (default "...")
-      -port string
-        	项目默认端口 (default "7000")
-      -resp string
-        	Maven项目资源定义, 格式: groupId:artifactId:version, version为可选项, 默认使用0.0.1
-      -scheduler
-        	新建基于NanoFramework的任务调度项目
-      -web
-        	新建基于NanoFramework的Web项目
-      -yaml string
-        	Yaml配置文件路径
-        	
+    Build a maven project
+    
+    Usage:
+      nanogo [command]
+    
+    Available Commands:
+      init        New a maven project
+      version     Display the version
+    
+    Use "nanogo [command] --help" for more information about a command.
+
+##### 查看项目初始化帮助信息
+     ~$ nanogo init -h
+     New a maven project
+     
+     Usage:
+       nanogo init [flags]
+     
+     Flags:
+       -l, --log-level string   Log level (options "debug", "info", "warn", "error", "fatal", "panic") (default "info")
+       -n, --name string        Maven project name definition, format: "groupId:artifactId:version", version is optional, the default use of 0.0.1
+           --parent string      Maven top POM dependency, format: "groupId:artifactId:version" (default "org.nanoframework:super:0.0.11")
+           --path string        The project path by default using the current path (default "/Users/yanghe/Works/____Go_Project____/____Workspaces____/src/github.com/nano-projects/nanogo")
+       -p, --publish uint       Project default port (default 7000)
+       -s, --scheduler          New a scheduler project of nano framework
+       -t, --template string    The project template file path
+       -w, --web                New a webapp project of nano framework
+     
 ##### 构建基于NanoFramework的Web项目
     
-    ~$ nanogo -new -web -path <Your creation project path> -resp <GroupId>:<ArtifactId>:<Version (Optional)>
+    ~$ nanogo init -w -n <GroupId>:<ArtifactId>:<Version (Optional)>
 
 ##### 构建基于NanoFramework的Scheduler项目
 
-    ~$ nanogo -new -scheduler -path <Your creation project path> -resp <GroupId>:<ArtifactId>:<Version (Optional)>
+    ~$ nanogo init -s --path <Your creation project path> -n <GroupId>:<ArtifactId>:<Version (Optional)>
+
+##### 构建基于NanoFramework的自定义模板项目
+
+    ~$ nanogo init -n <GroupId>:<ArtifactId>:<Version (Optional)> -t <Your yml template file path>
 
 ###### e.g. 
     
-    ~$ nanogo -new -web -path /Users/yanghe/Works/____Go_Project____/____Workspaces____ -resp org.nanoframework.nanogo:test
+    ~$ nanogo init -w --path /Users/yanghe/Works/____Go_Project____/____Workspaces____ -n org.nanoframework.nanogo:test
     create file:  /Users/yanghe/Works/____Go_Project____/____Workspaces____/test/test-common/pom.xml
     ...
     create file:  /Users/yanghe/Works/____Go_Project____/____Workspaces____/test/test-mapper/pom.xml
@@ -151,7 +153,7 @@ NanoGo
     └── <ArtifactId>-webapp [ <ArtifactId>-scheduler ]
         ├── src/main/java/<GroupID package>/<ArtifactId>
         │   ├── .gitkeep
-        │   └── Bootstrap.java
+        │   └── XXXBootstrap.java
         ├── src/main/resources
         │   ├── .gitkeep
         │   ├── assembly.xml
@@ -186,5 +188,5 @@ NanoGo
     
 #### 项目启动
 
-    运行 <ArtifactId>-web/src/main/java/<GroupId package>/<ArtifactId>/Bootstrap.java
+    运行 <ArtifactId>-webapp/src/main/java/<GroupId package>/<ArtifactId>/XXXBootstrap.java
     访问应用: http://localhost:7000/<ArtifactId>

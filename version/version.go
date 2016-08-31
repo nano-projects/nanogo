@@ -12,12 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package main
+package version
 
 import (
-	"github.com/nano-projects/nanogo/cmd"
+	"fmt"
+	"io"
+	"os"
 )
 
-func main() {
-	cmd.Execute()
+var (
+	Package = "github.com/nano-projects/nanogo"
+	Version = "0.1.0"
+)
+
+func FprintVersion(w io.Writer) {
+	fmt.Fprintln(w, os.Args[0], Package, Version)
+}
+
+func PrintVersion() {
+	FprintVersion(os.Stdout)
 }

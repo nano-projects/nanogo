@@ -12,12 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package main
+package template
 
-import (
-	"github.com/nano-projects/nanogo/cmd"
-)
+import "text/template"
 
-func main() {
-	cmd.Execute()
+func Definitions() (*template.Template, error) {
+	def := `<?xml version="1.0" encoding="UTF-8"?>
+<additionalHeaders>
+  <JAVADOC_STYLE>
+    <firstLine>/*</firstLine>
+    <beforeEachLine> * </beforeEachLine>
+    <endLine> */</endLine>
+    <firstLineDetectionPattern>( |\t)*/\*( |\t)*$</firstLineDetectionPattern>
+    <lastLineDetectionPattern>( |\t)*\*/( |\t)*$</lastLineDetectionPattern>
+    <allowBlankLines>true</allowBlankLines>
+    <isMultiline>true</isMultiline>
+  </JAVADOC_STYLE>
+</additionalHeaders>
+`
+
+	return template.New("Definitions").Parse(def)
 }

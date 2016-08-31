@@ -12,12 +12,38 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package main
+package conf
 
-import (
-	"github.com/nano-projects/nanogo/cmd"
-)
+type TmpConfig struct {
+	GroupId string
 
-func main() {
-	cmd.Execute()
+	ArtifactId string
+
+	Version string
+
+	ParentGroupId string
+
+	ParentArtifactId string
+
+	ParentVersion string
+
+	Package string
+
+	SourcePackage string
+
+	ComponentPackage string
+
+	SchedulerPackage string
+
+	BootstrapClassName string
+
+	Bootstrap string
+
+	ContextRoot string
+
+	Publish string
+
+	Year string
+
+	DisplayName string
 }

@@ -12,12 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package main
+package template
 
 import (
-	"github.com/nano-projects/nanogo/cmd"
+	"github.com/nano-projects/nanogo/template/license"
+	"text/template"
 )
 
-func main() {
-	cmd.Execute()
+func Findbugs() (*template.Template, error) {
+	findbugs := `<?xml version="1.0" encoding="UTF-8"?>
+` + license.Xml() + `
+<!-- See http://findbugs.sourceforge.net/manual/filter.html -->
+<FindBugsFilter>
+    <Match>
+        <Confidence value="2" />
+        <Rank value="15" />
+        <Bug category="SECURITY,PERFORMANCE,MALICIOUS_CODE" />
+    </Match>
+</FindBugsFilter>
+`
+
+	return template.New("FindBugs").Parse(findbugs)
 }

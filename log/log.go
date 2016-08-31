@@ -12,12 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package main
+package log
 
-import (
-	"github.com/nano-projects/nanogo/cmd"
+import "github.com/Sirupsen/logrus"
+
+var (
+	// standard logger
+	Logger = logrus.NewEntry(logrus.StandardLogger())
 )
-
-func main() {
-	cmd.Execute()
-}

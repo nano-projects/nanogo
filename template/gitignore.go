@@ -12,12 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package main
+package template
 
-import (
-	"github.com/nano-projects/nanogo/cmd"
-)
-
-func main() {
-	cmd.Execute()
-}
+const IGNORE = `.DS_Store
+.project
+.classpath
+.settings/
+target/
+tags
+logs/
+assembly/
+conf/
+*.log
+webRoot/
+*.zip
+*.tar.gz
+jetty.pid
+.checkstyle
+.fbIncludeFilterFile
+`
