@@ -18,11 +18,21 @@ import (
 	"bufio"
 	"github.com/nano-projects/nanogo/log"
 	"os"
+	"text/template"
 )
 
 const (
 	FILE_MODE = 0755
 )
+
+func Pwd() (path string) {
+	path, err := os.Getwd()
+	if err != nil {
+		log.Logger.Fatal(err)
+	}
+
+	return
+}
 
 func IsDirExists(path string) bool {
 	file, err := os.Stat(path)
@@ -60,5 +70,17 @@ func WriteFile(fileName, data string) error {
 		return err
 	}
 
+	return nil
+}
+
+func WriteTemplate(path string, tmp *template.Template, conf interface{}) error {
+	log.Logger.Infof("create file: %v", path)
+	file, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE, FILE_MODE)
+	if err != nil {
+		return err
+	}
+
+	defer file.Close()
+	tmp.Execute(file, conf)
 	return nil
 }

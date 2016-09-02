@@ -17,10 +17,9 @@ package cmd
 import (
 	"github.com/nano-projects/nanogo/initial"
 	"github.com/nano-projects/nanogo/initial/conf"
-	"github.com/nano-projects/nanogo/log"
+	"github.com/nano-projects/nanogo/io"
 	"github.com/nano-projects/nanogo/pom"
 	"github.com/spf13/cobra"
-	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -77,7 +76,7 @@ var initCmd = &cobra.Command{
 			return err
 		}
 
-		newConf := conf.NewConfig{
+		initialConf := conf.InitialConfig{
 			Web:       web,
 			Scheduler: scheduler,
 			Path:      path,
@@ -94,13 +93,12 @@ var initCmd = &cobra.Command{
 		schedulerPkg := srcPkg + ".scheduler"
 
 		var bootstrapClassName string
-		var displayName string
 		arts := strings.Split(nameDep.ArtifactId, "-")
 		for _, art := range arts {
 			bootstrapClassName += strings.ToUpper(art[:1]) + art[1:]
-			displayName += strings.ToUpper(art[:1]) + art[1:]
 		}
 
+		displayName := bootstrapClassName
 		bootstrapClassName += "Bootstrap"
 		bootstrap := srcPkg + "." + bootstrapClassName
 		tmpConf := conf.TmpConfig{
@@ -116,22 +114,19 @@ var initCmd = &cobra.Command{
 			SchedulerPackage:   schedulerPkg,
 			BootstrapClassName: bootstrapClassName,
 			Bootstrap:          bootstrap,
+			BootstrapVersion:   strings.Replace(nameDep.Version, pom.Snapshot, "", -1),
 			ContextRoot:        contextRoot,
-			Publish:            strconv.Itoa(int(newConf.Publish)),
+			Publish:            strconv.Itoa(int(initialConf.Publish)),
 			Year:               strconv.Itoa(time.Now().Year()),
 			DisplayName:        displayName,
 		}
 
-		new := initial.New{
-			Conf: newConf,
+		initial := &initial.Initial{
+			Conf: initialConf,
 			Tmp:  tmpConf,
 		}
 
-		if err := new.Run(); err != nil {
-			return err
-		}
-
-		return nil
+		return initial.Run()
 	},
 }
 
@@ -139,20 +134,10 @@ func init() {
 	RootCmd.AddCommand(initCmd)
 	initCmd.Flags().BoolP("web", "w", false, "Init a webapp project of nano framework")
 	initCmd.Flags().BoolP("scheduler", "s", false, "Init a scheduler project of nano framework")
-	initCmd.Flags().String("path", pwd(), "The project path by default using the current path")
+	initCmd.Flags().String("path", io.Pwd(), "The project path by default using the current path")
 	initCmd.Flags().StringP("template", "t", "", "The project template file path")
 	initCmd.Flags().String("parent", "org.nanoframework:super:0.0.11", `Maven top POM dependency, format: "groupId:artifactId:version"`)
 	initCmd.Flags().StringP("name", "n", "", `Maven project name definition, format: "groupId:artifactId:version", version is optional, the default use of 0.0.1`)
 	initCmd.Flags().UintP("publish", "p", 7000, "Project default port")
 
-}
-
-func pwd() (path string) {
-	if p, err := os.Getwd(); err != nil {
-		log.Logger.Fatal(err)
-	} else {
-		path = p
-	}
-
-	return
 }

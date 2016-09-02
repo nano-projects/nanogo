@@ -12,20 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package initial
+package template
 
-type Executor interface {
-	Exec() error
-}
+import (
+	"github.com/nano-projects/nanogo/initial/template/license"
+	"text/template"
+)
 
-func WithExecutor(n *New) (Executor, error) {
-	if n.Conf.Web {
-		return &ExecutorWebapp{n}, nil
-	}
+func Findbugs() (*template.Template, error) {
+	findbugs := `<?xml version="1.0" encoding="UTF-8"?>
+` + license.Xml() + `
+<!-- See http://findbugs.sourceforge.net/manual/filter.html -->
+<FindBugsFilter>
+    <Match>
+        <Confidence value="2" />
+        <Rank value="15" />
+        <Bug category="SECURITY,PERFORMANCE,MALICIOUS_CODE" />
+    </Match>
+</FindBugsFilter>
+`
 
-	if n.Conf.Scheduler {
-		return &ExecutorScheduler{&ExecutorWebapp{n}, n}, nil
-	}
-
-	return &ExecutorYml{&ExecutorWebapp{n}, n}, nil
+	return template.New("FindBugs").Parse(findbugs)
 }

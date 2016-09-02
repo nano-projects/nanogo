@@ -12,21 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package template
+package exec
 
-import (
-	"github.com/nano-projects/nanogo/template/license"
-	"text/template"
-)
-
-func IndexJsp() (*template.Template, error) {
-	jsp := license.Jsp() + `
-<html>
-<body>
-<h2>Hello World!</h2>
-</body>
-</html>
-`
-
-	return template.New("IndexJsp").Parse(jsp)
+type Executor interface {
+	Exec() error
 }

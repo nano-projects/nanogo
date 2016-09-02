@@ -15,23 +15,36 @@
 package initial
 
 import (
+	"github.com/nano-projects/nanogo/exec"
 	"github.com/nano-projects/nanogo/initial/conf"
 )
 
-type New struct {
-	Conf conf.NewConfig
+type Initial struct {
+	Conf conf.InitialConfig
 	Tmp  conf.TmpConfig
 }
 
-func (n *New) Run() error {
+func (n *Initial) Run() error {
 	if err := n.Conf.Valid(); err != nil {
 		return err
 	}
 
-	exec, err := WithExecutor(n)
+	exec, err := n.withExecutor()
 	if err != nil {
 		return err
 	}
 
 	return exec.Exec()
+}
+
+func (n *Initial) withExecutor() (exec.Executor, error) {
+	if n.Conf.Web {
+		return &ExecutorWebapp{n}, nil
+	}
+
+	if n.Conf.Scheduler {
+		return &ExecutorScheduler{&ExecutorWebapp{n}}, nil
+	}
+
+	return &ExecutorYml{&ExecutorWebapp{n}}, nil
 }

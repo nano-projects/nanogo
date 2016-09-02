@@ -15,35 +15,21 @@
 package conf
 
 type TmpConfig struct {
-	GroupId string
-
-	ArtifactId string
-
-	Version string
-
-	ParentGroupId string
-
-	ParentArtifactId string
-
-	ParentVersion string
-
-	Package string
-
-	SourcePackage string
-
-	ComponentPackage string
-
-	SchedulerPackage string
-
+	GroupId            string
+	ArtifactId         string
+	Version            string
+	ParentGroupId      string
+	ParentArtifactId   string
+	ParentVersion      string
+	Package            string
+	SourcePackage      string
+	ComponentPackage   string
+	SchedulerPackage   string
 	BootstrapClassName string
-
-	Bootstrap string
-
-	ContextRoot string
-
-	Publish string
-
-	Year string
-
-	DisplayName string
+	Bootstrap          string
+	BootstrapVersion string
+	ContextRoot        string
+	Publish            string
+	Year               string
+	DisplayName        string
 }

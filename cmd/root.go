@@ -15,16 +15,16 @@
 package cmd
 
 import (
+	"github.com/Sirupsen/logrus"
 	"github.com/nano-projects/nanogo/log"
 	"github.com/spf13/cobra"
-	"github.com/Sirupsen/logrus"
 	"os"
 )
 
 var (
 	RootCmd = &cobra.Command{
-		Use:          "nanogo",
-		Short:        "Build a maven project",
+		Use:   "nanogo",
+		Short: "Build a maven project",
 		Long: `NanoGo is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Maven application.`,
@@ -37,6 +37,10 @@ to quickly create a Maven application.`,
 			}
 
 			level, err := logrus.ParseLevel(flag)
+			if err != nil {
+				log.Logger.Fatal(err)
+			}
+
 			logrus.SetLevel(level)
 		},
 	}

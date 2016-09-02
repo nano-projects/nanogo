@@ -1,0 +1,3 @@
+init -w -n org.nanoframework.nanogo:testgo --path /Users/yanghe/Works/____Go_Project____/____Workspaces____
+
+add -l debug --path /Users/yanghe/Works/____Go_Project____/____Workspaces____/testgo -n Test -c -S

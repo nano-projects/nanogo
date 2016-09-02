@@ -15,22 +15,18 @@
 package template
 
 import (
-	"github.com/nano-projects/nanogo/template/license"
+	"github.com/nano-projects/nanogo/initial/template/license"
 	"text/template"
 )
 
-func Findbugs() (*template.Template, error) {
-	findbugs := `<?xml version="1.0" encoding="UTF-8"?>
-` + license.Xml() + `
-<!-- See http://findbugs.sourceforge.net/manual/filter.html -->
-<FindBugsFilter>
-    <Match>
-        <Confidence value="2" />
-        <Rank value="15" />
-        <Bug category="SECURITY,PERFORMANCE,MALICIOUS_CODE" />
-    </Match>
-</FindBugsFilter>
+func IndexJsp() (*template.Template, error) {
+	jsp := license.Jsp() + `
+<html>
+<body>
+<h2>Hello World!</h2>
+</body>
+</html>
 `
 
-	return template.New("FindBugs").Parse(findbugs)
+	return template.New("IndexJsp").Parse(jsp)
 }

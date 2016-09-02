@@ -15,6 +15,11 @@
 package cmd
 
 import (
+	"github.com/nano-projects/nanogo/addition"
+	"github.com/nano-projects/nanogo/addition/conf"
+	"github.com/nano-projects/nanogo/io"
+	"github.com/nano-projects/nanogo/log"
+	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
 
@@ -23,12 +28,45 @@ var addCmd = &cobra.Command{
 	Use:   "add",
 	Short: "Add Source file of flags",
 	RunE: func(cmd *cobra.Command, args []string) error {
+		path, err := cmd.Flags().GetString("path")
+		if err != nil {
+			return err
+		}
 
-		return nil
+		author, err := cmd.Flags().GetString("author")
+		if err != nil {
+			return err
+		}
+
+		if author == "" {
+			return errors.New("Author cannot be empty")
+		}
+
+		name, err := cmd.Flags().GetString("name")
+		if err != nil {
+			return err
+		} else if name == "" {
+			return errors.New("Source name cannot be empty")
+		}
+
+		if path == "" {
+			path = io.Pwd()
+		}
+
+		log.Logger.Debugf("Project path: %v", path)
+		addConf, err := conf.Make(path, author, name)
+		if err != nil {
+			return err
+		}
+
+		return (&addition.Addition{AddConf: *addConf}).Run()
 	},
 }
 
 func init() {
 	RootCmd.AddCommand(addCmd)
-	
+	addCmd.Flags().String("path", io.Pwd(), "The project root path")
+	addCmd.Flags().StringP("author", "a", "", "Creation file author")
+	addCmd.Flags().StringP("name", "n", "", "The interface or class prefix name")
+
 }

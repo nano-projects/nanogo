@@ -20,8 +20,35 @@ type Schema struct {
 	Projects map[string]project `yaml:"projects,flow" xml:"projects"`
 }
 
+type Project struct {
+	// The location of the parent project, if one exists.
+	// Values from the parent project will be the default for this project if they are left unspecified.
+	// The location is given as a group ID, artifact ID and version.
+	// @version 4.0.0+
+	Parent *Parent `yaml:"parent" xml:"parent,omitempty"`
+
+	// A universally unique identifier for a project.
+	// It is normal to use a fully-qualified package name to distinguish it from other projects with a similar name (eg. <code>org.apache.maven</code>).
+	// @version 3.0.0+
+	GroupId string `yaml:"groupId" xml:"groupId,omitempty"`
+
+	// The identifier for this artifact that is unique within the group given by the group ID.
+	// An artifact is something that is either produced or used by a project.
+	// Examples of artifacts produced by Maven for a project include: JARs, source and binary distributions, and WARs.
+	// @version 3.0.0+
+	ArtifactId string `yaml:"artifactId" xml:"artifactId,omitempty"`
+
+	// The current version of the artifact produced by this project.
+	// @version 4.0.0+
+	Version string `yaml:"version" xml:"version,omitempty"`
+}
+
 func (this *Schema) Project(name string) project {
 	return this.Projects[name]
+}
+
+func (this *Schema) MakeProject() *project {
+	return &project{}
 }
 
 // The <code>&lt;project&gt;</code> element is the root of the descriptor. The following table lists all of the possible child elements.

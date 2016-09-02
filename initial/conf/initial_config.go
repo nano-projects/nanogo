@@ -16,36 +16,27 @@ package conf
 
 import (
 	"github.com/nano-projects/nanogo/io"
-	"github.com/nano-projects/nanogo/log"
 	"github.com/nano-projects/nanogo/pom"
 	"github.com/pkg/errors"
 	"io/ioutil"
-	"os"
 	"path/filepath"
-	"text/template"
 )
 
 const (
 	DefaultYamlFileName = "nanogo.yml"
 )
 
-type NewConfig struct {
-	Web bool
-
+type InitialConfig struct {
+	Web       bool
 	Scheduler bool
-
-	Path string
-
-	Template string
-
-	Parent pom.Dependency
-
-	Name pom.Dependency
-
-	Publish uint
+	Path      string
+	Template  string
+	Parent    pom.Dependency
+	Name      pom.Dependency
+	Publish   uint
 }
 
-func (conf *NewConfig) existsYaml() bool {
+func (conf *InitialConfig) existsYaml() bool {
 	var path string
 	if conf.Template != "" {
 		path = conf.Template
@@ -56,7 +47,7 @@ func (conf *NewConfig) existsYaml() bool {
 	return io.IsFileExists(path)
 }
 
-func (conf *NewConfig) LoadYaml() ([]byte, error) {
+func (conf *InitialConfig) LoadYaml() ([]byte, error) {
 	var path string
 	if conf.Template != "" {
 		path = conf.Template
@@ -67,7 +58,7 @@ func (conf *NewConfig) LoadYaml() ([]byte, error) {
 	return ioutil.ReadFile(path)
 }
 
-func (conf *NewConfig) Valid() error {
+func (conf *InitialConfig) Valid() error {
 	if conf.Web && conf.Scheduler {
 		return errors.New(`Cannot specify both "web" and "scheduler"`)
 	}
@@ -82,17 +73,5 @@ func (conf *NewConfig) Valid() error {
 		return errors.New("Publish cannot be less than 1024")
 	}
 
-	return nil
-}
-
-func WriteTemplate(path string, tmp *template.Template, conf TmpConfig) error {
-	log.Logger.Infof("create file: %v", path)
-	file, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE, io.FILE_MODE)
-	if err != nil {
-		return err
-	}
-
-	defer file.Close()
-	tmp.Execute(file, conf)
 	return nil
 }

@@ -16,22 +16,21 @@ package initial
 
 import (
 	"encoding/xml"
+	"github.com/nano-projects/nanogo/initial/template"
+	"github.com/nano-projects/nanogo/initial/template/license"
 	"github.com/nano-projects/nanogo/io"
 	"github.com/nano-projects/nanogo/log"
 	"github.com/nano-projects/nanogo/pom"
-	"github.com/nano-projects/nanogo/template"
-	"github.com/nano-projects/nanogo/template/license"
 	"github.com/pkg/errors"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	textTemplate "text/template"
-	"github.com/nano-projects/nanogo/initial/conf"
 )
 
 type ExecutorWebapp struct {
-	n *New
+	n *Initial
 }
 
 func (e *ExecutorWebapp) Exec() error {
@@ -72,7 +71,7 @@ func (e *ExecutorWebapp) loadYml() ([]byte, error) {
 		return nil, err
 	}
 
-	if err := conf.WriteTemplate(ymlFilePath, tmp, e.n.Tmp); err != nil {
+	if err := io.WriteTemplate(ymlFilePath, tmp, e.n.Tmp); err != nil {
 		return nil, err
 	}
 
@@ -117,7 +116,7 @@ func (e *ExecutorWebapp) makeBaseSource() error {
 	if tmp, err := template.CodeTemplate(); err != nil {
 		return err
 	} else {
-		if err := conf.WriteTemplate(filepath.Join(projectPath, "src/eclipse/eclipse-code-template.xml"), tmp, e.n.Tmp); err != nil {
+		if err := io.WriteTemplate(filepath.Join(projectPath, "src/eclipse/eclipse-code-template.xml"), tmp, e.n.Tmp); err != nil {
 			return err
 		}
 	}
@@ -125,7 +124,7 @@ func (e *ExecutorWebapp) makeBaseSource() error {
 	if tmp, err := template.CodeStyle(); err != nil {
 		return err
 	} else {
-		if err := conf.WriteTemplate(filepath.Join(projectPath, "src/eclipse/eclipse-code-style.xml"), tmp, e.n.Tmp); err != nil {
+		if err := io.WriteTemplate(filepath.Join(projectPath, "src/eclipse/eclipse-code-style.xml"), tmp, e.n.Tmp); err != nil {
 			return err
 		}
 	}
@@ -133,7 +132,7 @@ func (e *ExecutorWebapp) makeBaseSource() error {
 	if tmp, err := template.Settings(); err != nil {
 		return err
 	} else {
-		if err := conf.WriteTemplate(filepath.Join(projectPath, "src/mvn/settings.xml"), tmp, e.n.Tmp); err != nil {
+		if err := io.WriteTemplate(filepath.Join(projectPath, "src/mvn/settings.xml"), tmp, e.n.Tmp); err != nil {
 			return err
 		}
 	}
@@ -145,7 +144,7 @@ func (e *ExecutorWebapp) makeBaseSource() error {
 	if tmp, err := template.Findbugs(); err != nil {
 		return err
 	} else {
-		if err := conf.WriteTemplate(filepath.Join(projectPath, "findbugs-rules.xml"), tmp, e.n.Tmp); err != nil {
+		if err := io.WriteTemplate(filepath.Join(projectPath, "findbugs-rules.xml"), tmp, e.n.Tmp); err != nil {
 			return err
 		}
 	}
@@ -153,7 +152,7 @@ func (e *ExecutorWebapp) makeBaseSource() error {
 	if tmp, err := template.CheckstyleRules(); err != nil {
 		return err
 	} else {
-		if err := conf.WriteTemplate(filepath.Join(projectPath, "checkstyle-rules.xml"), tmp, e.n.Tmp); err != nil {
+		if err := io.WriteTemplate(filepath.Join(projectPath, "checkstyle-rules.xml"), tmp, e.n.Tmp); err != nil {
 			return err
 		}
 	}
@@ -161,7 +160,7 @@ func (e *ExecutorWebapp) makeBaseSource() error {
 	if tmp, err := template.CheckstyleSuppressions(); err != nil {
 		return err
 	} else {
-		if err := conf.WriteTemplate(filepath.Join(projectPath, "checkstyle-suppressions.xml"), tmp, e.n.Tmp); err != nil {
+		if err := io.WriteTemplate(filepath.Join(projectPath, "checkstyle-suppressions.xml"), tmp, e.n.Tmp); err != nil {
 			return err
 		}
 	}
@@ -169,7 +168,7 @@ func (e *ExecutorWebapp) makeBaseSource() error {
 	if tmp, err := template.Header(); err != nil {
 		return err
 	} else {
-		if err := conf.WriteTemplate(filepath.Join(projectPath, "src/licensing/header.txt"), tmp, e.n.Tmp); err != nil {
+		if err := io.WriteTemplate(filepath.Join(projectPath, "src/licensing/header.txt"), tmp, e.n.Tmp); err != nil {
 			return err
 		}
 	}
@@ -177,7 +176,7 @@ func (e *ExecutorWebapp) makeBaseSource() error {
 	if tmp, err := template.Definitions(); err != nil {
 		return err
 	} else {
-		if err := conf.WriteTemplate(filepath.Join(projectPath, "src/licensing/header-definitions.xml"), tmp, e.n.Tmp); err != nil {
+		if err := io.WriteTemplate(filepath.Join(projectPath, "src/licensing/header-definitions.xml"), tmp, e.n.Tmp); err != nil {
 			return err
 		}
 	}
@@ -230,7 +229,7 @@ func (e *ExecutorWebapp) makePom(data []byte, projectPath string) error {
 		return err
 	}
 
-	return conf.WriteTemplate(filepath.Join(projectPath, "pom.xml"), tmp, e.n.Tmp)
+	return io.WriteTemplate(filepath.Join(projectPath, "pom.xml"), tmp, e.n.Tmp)
 }
 
 func (e *ExecutorWebapp) makeModuleDirectory(modulePath string, moduleType string) error {
@@ -320,7 +319,7 @@ func (e *ExecutorWebapp) makeModuleSource(modulePath string, moduleType string) 
 		if tmp, err := template.Bootstrap(); err != nil {
 			return err
 		} else {
-			if err := conf.WriteTemplate(filepath.Join(modulePath, "bin/bootstrap.sh"), tmp, e.n.Tmp); err != nil {
+			if err := io.WriteTemplate(filepath.Join(modulePath, "bin/bootstrap.sh"), tmp, e.n.Tmp); err != nil {
 				return err
 			}
 		}
@@ -328,7 +327,7 @@ func (e *ExecutorWebapp) makeModuleSource(modulePath string, moduleType string) 
 		if tmp, err := template.BootstrapClass(); err != nil {
 			return err
 		} else {
-			if err := conf.WriteTemplate(filepath.Join(modulePath, "src/main/java", e.n.Tmp.Package, e.n.Tmp.BootstrapClassName + ".java"), tmp, e.n.Tmp); err != nil {
+			if err := io.WriteTemplate(filepath.Join(modulePath, "src/main/java", e.n.Tmp.Package, e.n.Tmp.BootstrapClassName+".java"), tmp, e.n.Tmp); err != nil {
 				return err
 			}
 		}
@@ -336,7 +335,7 @@ func (e *ExecutorWebapp) makeModuleSource(modulePath string, moduleType string) 
 		if tmp, err := template.Assembly(); err != nil {
 			return err
 		} else {
-			if err := conf.WriteTemplate(filepath.Join(modulePath, "src/main/resources/assembly.xml"), tmp, e.n.Tmp); err != nil {
+			if err := io.WriteTemplate(filepath.Join(modulePath, "src/main/resources/assembly.xml"), tmp, e.n.Tmp); err != nil {
 				return err
 			}
 		}
@@ -344,7 +343,7 @@ func (e *ExecutorWebapp) makeModuleSource(modulePath string, moduleType string) 
 		if tmp, err := template.JettyXml(); err != nil {
 			return err
 		} else {
-			if err := conf.WriteTemplate(filepath.Join(modulePath, "src/main/webapp/WEB-INF/jetty.xml"), tmp, e.n.Tmp); err != nil {
+			if err := io.WriteTemplate(filepath.Join(modulePath, "src/main/webapp/WEB-INF/jetty.xml"), tmp, e.n.Tmp); err != nil {
 				return err
 			}
 		}
@@ -352,7 +351,7 @@ func (e *ExecutorWebapp) makeModuleSource(modulePath string, moduleType string) 
 		if tmp, err := template.WebXml(); err != nil {
 			return err
 		} else {
-			if err := conf.WriteTemplate(filepath.Join(modulePath, "src/main/webapp/WEB-INF/web.xml"), tmp, e.n.Tmp); err != nil {
+			if err := io.WriteTemplate(filepath.Join(modulePath, "src/main/webapp/WEB-INF/web.xml"), tmp, e.n.Tmp); err != nil {
 				return err
 			}
 		}
@@ -360,7 +359,7 @@ func (e *ExecutorWebapp) makeModuleSource(modulePath string, moduleType string) 
 		if tmp, err := template.WebDefaultXml(); err != nil {
 			return err
 		} else {
-			if err := conf.WriteTemplate(filepath.Join(modulePath, "src/main/webapp/WEB-INF/webdefault.xml"), tmp, e.n.Tmp); err != nil {
+			if err := io.WriteTemplate(filepath.Join(modulePath, "src/main/webapp/WEB-INF/webdefault.xml"), tmp, e.n.Tmp); err != nil {
 				return err
 			}
 		}
@@ -368,7 +367,7 @@ func (e *ExecutorWebapp) makeModuleSource(modulePath string, moduleType string) 
 		if tmp, err := template.IndexJsp(); err != nil {
 			return err
 		} else {
-			if err := conf.WriteTemplate(filepath.Join(modulePath, "src/main/webapp/index.jsp"), tmp, e.n.Tmp); err != nil {
+			if err := io.WriteTemplate(filepath.Join(modulePath, "src/main/webapp/index.jsp"), tmp, e.n.Tmp); err != nil {
 				return err
 			}
 		}
@@ -387,7 +386,7 @@ func (e *ExecutorWebapp) makeModuleContext(schema *pom.Schema) error {
 				if tmp, err := template.WebappContext(); err != nil {
 					return err
 				} else {
-					if err := conf.WriteTemplate(filepath.Join(modulePath, "src/main/resources/context.properties"), tmp, e.n.Tmp); err != nil {
+					if err := io.WriteTemplate(filepath.Join(modulePath, "src/main/resources/context.properties"), tmp, e.n.Tmp); err != nil {
 						return err
 					}
 				}

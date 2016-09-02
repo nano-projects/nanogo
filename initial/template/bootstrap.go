@@ -15,7 +15,7 @@
 package template
 
 import (
-	"github.com/nano-projects/nanogo/template/license"
+	"github.com/nano-projects/nanogo/initial/template/license"
 	"text/template"
 )
 
@@ -117,8 +117,8 @@ import org.nanoframework.server.JettyCustomServer;
 
 /**
  *
- * @author ${user}
- * @since {{.Version}}
+ * @author yanghe
+ * @since {{.BootstrapVersion}}
  */
 public final class {{.BootstrapClassName}} {
     private {{.BootstrapClassName}}() { }

@@ -15,10 +15,10 @@
 package initial
 
 import (
-	"github.com/nano-projects/nanogo/initial/conf"
+	"github.com/nano-projects/nanogo/initial/template"
+	"github.com/nano-projects/nanogo/io"
 	"github.com/nano-projects/nanogo/log"
 	"github.com/nano-projects/nanogo/pom"
-	"github.com/nano-projects/nanogo/template"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"path/filepath"
@@ -26,7 +26,6 @@ import (
 
 type ExecutorScheduler struct {
 	*ExecutorWebapp
-	n *New
 }
 
 func (e *ExecutorScheduler) Exec() error {
@@ -67,7 +66,7 @@ func (e *ExecutorScheduler) loadYml() ([]byte, error) {
 		return nil, err
 	}
 
-	if err := conf.WriteTemplate(ymlFilePath, tmp, e.n.Tmp); err != nil {
+	if err := io.WriteTemplate(ymlFilePath, tmp, e.n.Tmp); err != nil {
 		return nil, err
 	}
 
@@ -83,7 +82,7 @@ func (e *ExecutorScheduler) makeModuleContext(schema *pom.Schema) error {
 				if tmp, err := template.SchedulerContext(); err != nil {
 					return err
 				} else {
-					if err := conf.WriteTemplate(filepath.Join(modulePath, "src/main/resources/context.properties"), tmp, e.n.Tmp); err != nil {
+					if err := io.WriteTemplate(filepath.Join(modulePath, "src/main/resources/context.properties"), tmp, e.n.Tmp); err != nil {
 						return err
 					}
 				}

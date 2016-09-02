@@ -15,7 +15,7 @@
 package template
 
 import (
-	"github.com/nano-projects/nanogo/template/license"
+	"github.com/nano-projects/nanogo/initial/template/license"
 	"text/template"
 )
 
