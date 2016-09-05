@@ -1,4 +1,4 @@
-[![gorelease](https://dn-gorelease.qbox.me/gorelease-download-blue.svg)](https://gobuild.io/nano-projects/nanogo/master)
+[![gorelease](https://dn-gorelease.qbox.me/gorelease-download-blue.svg)](https://github.com/nano-projects/nanogo/releases)
 
 NanoGo
 ======
