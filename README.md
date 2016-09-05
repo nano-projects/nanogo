@@ -11,8 +11,8 @@ NanoGo
 下载安装
 ----
 
-    前往 https://gobuild.io/nano-projects/nanogo/master 下载二进制包
-    根据自身操作系统选择对应的版本进行下载, 提供Mac, Linux, Windows等主流操作系统的环境.
+    前往 https://github.com/nano-projects/nanogo/releases 下载二进制包
+    根据自身操作系统选择对应的版本进行下载, 提供Mac, Linux, Windows等主流操作系统的32位和64位环境.
     
 配置环境变量
 ------
@@ -45,15 +45,21 @@ NanoGo
 ##### 查看帮助信息
     
     ~$ nanogo -h
-    Build a maven project
-    
+    NanoGo is a CLI library for Go that empowers applications.
+    This application is a tool to generate the needed files
+    to quickly create a Maven application.
+
     Usage:
-      nanogo [command]
-    
+        nanogo [command]
+
     Available Commands:
-      init        New a maven project
-      version     Display the version
-    
+        add         Add Source file of flags
+        init        Init a maven project
+        version     Display the version
+
+    Flags:
+        -l, --log-level string   Log level (options "debug", "info", "warn", "error", "fatal", "panic") (default "info")
+
     Use "nanogo [command] --help" for more information about a command.
 
 ##### 查看项目初始化帮助信息
