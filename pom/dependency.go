@@ -24,7 +24,7 @@ const (
 	Snapshot                 = "-SNAPSHOT"
 )
 
-func (d Dependency) Parse(dep string) (Dependency, error) {
+func (d Dependency) Parse(dep string, snapshot bool) (Dependency, error) {
 	if dep == "" {
 		return d, errors.New("Unknown maven project dependency definition")
 	}
@@ -37,7 +37,7 @@ func (d Dependency) Parse(dep string) (Dependency, error) {
 	d.GroupId = deps[0]
 	d.ArtifactId = deps[1]
 	if len(deps) == 3 {
-		if !strings.HasSuffix(deps[2], Snapshot) {
+		if !strings.HasSuffix(deps[2], Snapshot) && snapshot {
 			d.Version = deps[2] + Snapshot
 		} else {
 			d.Version = deps[2]

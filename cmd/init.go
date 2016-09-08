@@ -66,12 +66,12 @@ var initCmd = &cobra.Command{
 			return err
 		}
 
-		parentDep, err := pom.Dependency{}.Parse(parent)
+		parentDep, err := pom.Dependency{}.Parse(parent, false)
 		if err != nil {
 			return err
 		}
 
-		nameDep, err := pom.Dependency{}.Parse(name)
+		nameDep, err := pom.Dependency{}.Parse(name, true)
 		if err != nil {
 			return err
 		}
