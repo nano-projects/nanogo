@@ -457,7 +457,7 @@ projects:
         - groupId: org.nanoframework
           artifactId: nano-webmvc
         - groupId: org.nanoframework
-          artifactId: nano-ext-concurrent
+          artifactId: nano-concurrent
         - groupId: {{.GroupId}}
           artifactId: {{.ArtifactId}}-core
 
