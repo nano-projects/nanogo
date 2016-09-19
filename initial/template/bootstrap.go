@@ -128,7 +128,7 @@ public final class {{.BootstrapClassName}} {
      * @param args bootstrap parameters.
      */
     public static void main(final String[] args) {
-        JettyCustomServer.DEFAULT.bootstrap(args);
+        JettyCustomServer.server().bootstrap(args);
     }
 }
 `
