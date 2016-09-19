@@ -72,7 +72,7 @@ NanoGo
      Flags:
        -l, --log-level string   Log level (options "debug", "info", "warn", "error", "fatal", "panic") (default "info")
        -n, --name string        Maven project name definition, format: "groupId:artifactId:version", version is optional, the default use of 0.0.1
-           --parent string      Maven top POM dependency, format: "groupId:artifactId:version" (default "org.nanoframework:super:0.0.11")
+           --parent string      Maven top POM dependency, format: "groupId:artifactId:version" (default "org.nanoframework:super:0.0.12")
            --path string        The project path by default using the current path (default "/Users/yanghe/Works/____Go_Project____/____Workspaces____/src/github.com/nano-projects/nanogo")
        -p, --publish uint       Project default port (default 7000)
        -s, --scheduler          New a scheduler project of nano framework
