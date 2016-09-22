@@ -21,7 +21,7 @@ import com.google.inject.Inject;
  * @author {{.Author}}
  * @since {{.Version}}
  */
-@Scheduler(parallel = 1)
+@Scheduler(parallel = 1, cron = "* * * * * ?")
 public class {{.SourceName}}Scheduler extends BaseScheduler {
 
     @Inject
