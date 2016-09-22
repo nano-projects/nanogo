@@ -9,8 +9,8 @@ func Scheduler() (*template.Template, error) {
 	sche := license.Class() + `
 package {{.Package}}.scheduler;
 
-import org.nanoframework.extension.concurrent.scheduler.BaseScheduler;
-import org.nanoframework.extension.concurrent.scheduler.Scheduler;
+import org.nanoframework.concurrent.scheduler.BaseScheduler;
+import org.nanoframework.concurrent.scheduler.Scheduler;
 
 import {{.Package}}.service.{{.SourceName}}Service;
 
