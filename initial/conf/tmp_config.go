@@ -27,7 +27,7 @@ type TmpConfig struct {
 	SchedulerPackage   string
 	BootstrapClassName string
 	Bootstrap          string
-	BootstrapVersion string
+	BootstrapVersion   string
 	ContextRoot        string
 	Publish            string
 	Year               string

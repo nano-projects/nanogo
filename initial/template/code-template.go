@@ -41,7 +41,7 @@ func CodeTemplate() (*template.Template, error) {
  <template autoinsert="true" context="typecomment_context" deleted="false" description="Comment for create Java type files" enabled="true" id="org.eclipse.jdt.ui.text.codetemplates.typecomment" name="typecomment">/**
  *
  * @author ${user}
- * @since {{.Version}}
+ * @since
  * ${tags}
  */</template>
  </templates>
