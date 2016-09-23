@@ -118,10 +118,10 @@ NanoGo
     ├── pom.xml
     ├── src
     │   ├── eclipse
-    │   │   ├── eclipse-code-template.xml
-    │   │   └── eclipse-formatter.xml
+    │   │   ├── eclipse-code-style.xml
+    │   │   └── eclipse-code-template.xml
     │   ├── mvn
-    │   │   └── settigs.xml
+    │   │   └── settings.xml
     │   ├── licensing
     │   │   ├── header-definitions.xml
     │   │   └── header.txt
