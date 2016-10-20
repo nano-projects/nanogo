@@ -113,7 +113,7 @@ func BootstrapClass() (*template.Template, error) {
 	bootstrap := license.Class() + `
 package {{.SourcePackage}};
 
-import org.nanoframework.server.JettyCustomServer;
+import org.nanoframework.server.{{.Server}}CustomServer;
 
 /**
  *
@@ -126,9 +126,10 @@ public final class {{.BootstrapClassName}} {
     /**
      *
      * @param args bootstrap parameters.
+     * @throws Throwable Server startup error
      */
-    public static void main(final String[] args) {
-        JettyCustomServer.server().bootstrap(args);
+    public static void main(final String[] args) throws Throwable {
+        {{.Server}}CustomServer.server().bootstrap(args);
     }
 }
 `

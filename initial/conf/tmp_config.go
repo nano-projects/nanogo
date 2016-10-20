@@ -32,4 +32,6 @@ type TmpConfig struct {
 	Publish            string
 	Year               string
 	DisplayName        string
+	Server             string
+	ServerDependencies string
 }

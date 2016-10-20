@@ -34,6 +34,10 @@ context.version={{.Version}}
 context.root=/{{.ContextRoot}}
 
 context.component-scan.base-package={{.ComponentPackage}}
+
+context.tomcat.connector={ \
+  "port": {{.Publish}} \
+}
 `
 	return template.New("WebappContext").Parse(context)
 }
@@ -70,6 +74,10 @@ context.version={{.Version}}
 
 # 服务根
 context.root=/{{.ContextRoot}}
+
+context.tomcat.connector={ \
+  "port": {{.Publish}} \
+}
 `
 	return template.New("Context").Parse(context)
 }

@@ -39,12 +39,39 @@ func (n *Initial) Run() error {
 
 func (n *Initial) withExecutor() (exec.Executor, error) {
 	if n.Conf.Web {
+		n.serverDependencies("Tomcat")
 		return &ExecutorWebapp{n}, nil
 	}
 
 	if n.Conf.Scheduler {
+		n.serverDependencies("Jetty")
 		return &ExecutorScheduler{&ExecutorWebapp{n}}, nil
 	}
 
+	n.serverDependencies("Tomcat")
 	return &ExecutorYml{&ExecutorWebapp{n}}, nil
+}
+
+func (n *Initial) serverDependencies(defServer string) {
+	if n.Tmp.Server == "" {
+		n.Tmp.Server = defServer
+	}
+
+	switch n.Tmp.Server {
+	case "Tomcat":
+		n.Tmp.ServerDependencies = `- groupId: org.nanoframework
+          artifactId: nano-tomcat-server`
+	case "Jetty":
+		n.Tmp.ServerDependencies = `- groupId: org.eclipse.jetty.orbit
+          artifactId: javax.servlet.jsp
+        - groupId: org.nanoframework
+          artifactId: nano-jetty-server
+          exclusions:
+            exclusion:
+              - groupId: javax.servlet.jsp
+                artifactId: javax.servlet.jsp-api`
+	default:
+		n.Tmp.ServerDependencies = `- groupId: org.nanoframework
+          artifactId: nano-tomcat-server`
+	}
 }

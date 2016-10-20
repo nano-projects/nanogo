@@ -14,7 +14,10 @@
 
 package template
 
-import "text/template"
+import (
+	"text/template"
+	"github.com/nano-projects/nanogo/initial/template/license"
+)
 
 const (
 	XMLNS               = "http://maven.apache.org/POM/4.0.0"
@@ -23,7 +26,7 @@ const (
 )
 
 func WebappPom() (*template.Template, error) {
-	pom := `
+	pom := license.Properties() + `
 projects:
   {{.ArtifactId}}:
     modelVersion: 4.0.0
@@ -206,16 +209,9 @@ projects:
         - groupId: junit
           artifactId: junit
           scope: test
-        - groupId: org.eclipse.jetty.orbit
-          artifactId: javax.servlet.jsp
         - groupId: javax.servlet
           artifactId: jstl
-        - groupId: org.nanoframework
-          artifactId: nano-server
-          exclusions:
-            exclusion:
-              - groupId: javax.servlet.jsp
-                artifactId: javax.servlet.jsp-api
+        {{.ServerDependencies}}
         - groupId: {{.GroupId}}
           artifactId: {{.ArtifactId}}-webapp-support
     build:
@@ -294,7 +290,7 @@ projects:
 }
 
 func SchedulerPom() (*template.Template, error) {
-	pom := `
+	pom := license.Properties() + `
 projects:
   {{.ArtifactId}}:
     modelVersion: 4.0.0
@@ -479,16 +475,9 @@ projects:
         - groupId: junit
           artifactId: junit
           scope: test
-        - groupId: org.eclipse.jetty.orbit
-          artifactId: javax.servlet.jsp
         - groupId: javax.servlet
           artifactId: jstl
-        - groupId: org.nanoframework
-          artifactId: nano-server
-          exclusions:
-            exclusion:
-              - groupId: javax.servlet.jsp
-                artifactId: javax.servlet.jsp-api
+        {{.ServerDependencies}}
         - groupId: {{.GroupId}}
           artifactId: {{.ArtifactId}}-scheduler-support
     build:

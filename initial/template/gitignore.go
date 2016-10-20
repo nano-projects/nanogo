@@ -27,7 +27,7 @@ conf/
 webRoot/
 *.zip
 *.tar.gz
-jetty.pid
+*.pid
 .checkstyle
 .fbIncludeFilterFile
 `

@@ -340,11 +340,13 @@ func (e *ExecutorWebapp) makeModuleSource(modulePath string, moduleType string) 
 			}
 		}
 
-		if tmp, err := template.JettyXml(); err != nil {
-			return err
-		} else {
-			if err := io.WriteTemplate(filepath.Join(modulePath, "src/main/webapp/WEB-INF/jetty.xml"), tmp, e.n.Tmp); err != nil {
+		if e.n.Tmp.Server == "Jetty" {
+			if tmp, err := template.JettyXml(); err != nil {
 				return err
+			} else {
+				if err := io.WriteTemplate(filepath.Join(modulePath, "src/main/webapp/WEB-INF/jetty.xml"), tmp, e.n.Tmp); err != nil {
+					return err
+				}
 			}
 		}
 
@@ -356,11 +358,13 @@ func (e *ExecutorWebapp) makeModuleSource(modulePath string, moduleType string) 
 			}
 		}
 
-		if tmp, err := template.WebDefaultXml(); err != nil {
-			return err
-		} else {
-			if err := io.WriteTemplate(filepath.Join(modulePath, "src/main/webapp/WEB-INF/webdefault.xml"), tmp, e.n.Tmp); err != nil {
+		if e.n.Tmp.Server == "Jetty" {
+			if tmp, err := template.WebDefaultXml(); err != nil {
 				return err
+			} else {
+				if err := io.WriteTemplate(filepath.Join(modulePath, "src/main/webapp/WEB-INF/webdefault.xml"), tmp, e.n.Tmp); err != nil {
+					return err
+				}
 			}
 		}
 
