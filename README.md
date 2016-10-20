@@ -64,21 +64,39 @@ NanoGo
 
 ##### 查看项目初始化帮助信息
      ~$ nanogo init -h
-     New a maven project
+    Init a maven project
+
+    Usage:
+      nanogo init [flags]
+
+    Flags:
+      -n, --name string       Maven project name definition, format: "groupId:artifactId:version", version is optional, the default use of 0.0.1
+          --parent string     Maven top POM dependency, format: "groupId:artifactId:version" (default "org.nanoframework:super:0.0.14")
+          --path string       The project path by default using the current path (default "/Users/yanghe/Works/____Go_Project____/____Workspaces____/src/github.com/nano-projects/nanogo")
+      -p, --publish uint      Project default port (default 7000)
+      -s, --scheduler         Init a scheduler project of nano framework
+          --server string     Set up the server (option 'Tomcat' or 'Jetty')
+      -t, --template string   The project template file path
+      -w, --web               Init a webapp project of nano framework
      
-     Usage:
-       nanogo init [flags]
-     
-     Flags:
-       -l, --log-level string   Log level (options "debug", "info", "warn", "error", "fatal", "panic") (default "info")
-       -n, --name string        Maven project name definition, format: "groupId:artifactId:version", version is optional, the default use of 0.0.1
-           --parent string      Maven top POM dependency, format: "groupId:artifactId:version" (default "org.nanoframework:super:0.0.12")
-           --path string        The project path by default using the current path (default "/Users/yanghe/Works/____Go_Project____/____Workspaces____/src/github.com/nano-projects/nanogo")
-       -p, --publish uint       Project default port (default 7000)
-       -s, --scheduler          New a scheduler project of nano framework
-       -t, --template string    The project template file path
-       -w, --web                New a webapp project of nano framework
-     
+    Global Flags:
+      -l, --log-level string   Log level (options 'debug', 'info', 'warn', 'error', 'fatal', 'panic') (default "info")
+      
+##### 查看代码构建帮助信息
+    ~$ nanogo add -h
+    Add Source file of flags
+
+    Usage:
+      nanogo add [flags]
+
+    Flags:
+      -a, --author string   Creation file author
+      -n, --name string     The interface or class prefix name
+          --path string     The project root path (default "/Users/yanghe/Works/____Go_Project____/____Workspaces____/src/github.com/nano-projects/nanogo")
+
+    Global Flags:
+      -l, --log-level string   Log level (options 'debug', 'info', 'warn', 'error', 'fatal', 'panic') (default "info")
+
 ##### 构建基于NanoFramework的Web项目
     
     ~$ nanogo init -w -n <GroupId>:<ArtifactId>:<Version (Optional)>
@@ -111,7 +129,6 @@ NanoGo
 
     <ArtifactId>
     ├── checkstyle-rules.xml
-    ├── checkstyle-suppressions.xml
     ├── checkstyle-suppressions.xml
     ├── findbugs-rules.xml
     ├── .gitignore
