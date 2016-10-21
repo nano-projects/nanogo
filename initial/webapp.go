@@ -368,6 +368,16 @@ func (e *ExecutorWebapp) makeModuleSource(modulePath string, moduleType string) 
 			}
 		}
 
+		if e.n.Tmp.Server == "Tomcat" {
+			if tmp, err := template.TomcatDefaultXml(); err != nil {
+				return err
+			} else {
+				if err := io.WriteTemplate(filepath.Join(modulePath, "src/main/webapp/WEB-INF/default.xml"), tmp, e.n.Tmp); err != nil {
+					return err
+				}
+			}
+		}
+
 		if tmp, err := template.IndexJsp(); err != nil {
 			return err
 		} else {
