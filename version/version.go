@@ -22,7 +22,7 @@ import (
 
 var (
 	Package = "github.com/nano-projects/nanogo"
-	Version = "0.1.3-SNAPSHOT"
+	Version = "0.1.3"
 )
 
 func FprintVersion(w io.Writer) {
