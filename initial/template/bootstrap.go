@@ -113,6 +113,7 @@ func BootstrapClass() (*template.Template, error) {
 	bootstrap := license.Class() + `
 package {{.SourcePackage}};
 
+import org.nanoframework.server.GitPull;
 import org.nanoframework.server.{{.Server}}CustomServer;
 
 /**
@@ -129,6 +130,7 @@ public final class {{.BootstrapClassName}} {
      * @throws Throwable Server startup error
      */
     public static void main(final String[] args) throws Throwable {
+        GitPull.create().quickPull(args);
         {{.Server}}CustomServer.server().bootstrap(args);
     }
 }

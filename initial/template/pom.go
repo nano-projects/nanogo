@@ -212,6 +212,8 @@ projects:
         - groupId: javax.servlet
           artifactId: jstl
         {{.ServerDependencies}}
+        - groupId: org.nanoframework
+          artifactId: nano-server
         - groupId: {{.GroupId}}
           artifactId: {{.ArtifactId}}-webapp-support
     build:
@@ -478,6 +480,8 @@ projects:
         - groupId: javax.servlet
           artifactId: jstl
         {{.ServerDependencies}}
+        - groupId: org.nanoframework
+          artifactId: nano-server
         - groupId: {{.GroupId}}
           artifactId: {{.ArtifactId}}-scheduler-support
     build:

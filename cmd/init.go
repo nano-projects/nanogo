@@ -145,7 +145,7 @@ func init() {
 	initCmd.Flags().BoolP("scheduler", "s", false, "Init a scheduler project of nano framework")
 	initCmd.Flags().String("path", io.Pwd(), "The project path by default using the current path")
 	initCmd.Flags().StringP("template", "t", "", "The project template file path")
-	initCmd.Flags().String("parent", "org.nanoframework:super:0.0.17", `Maven top POM dependency, format: "groupId:artifactId:version"`)
+	initCmd.Flags().String("parent", "org.nanoframework:super:1.4.6-SNAPSHOT", `Maven top POM dependency, format: "groupId:artifactId:version"`)
 	initCmd.Flags().StringP("name", "n", "", `Maven project name definition, format: "groupId:artifactId:version", version is optional, the default use of 0.0.1`)
 	initCmd.Flags().UintP("publish", "p", 7000, "Project default port")
 	initCmd.Flags().String("server", "", `Set up the server (option 'Tomcat' or 'Jetty')`)
