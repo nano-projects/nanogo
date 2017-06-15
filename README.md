@@ -71,7 +71,7 @@ NanoGo
 
     Flags:
       -n, --name string       Maven project name definition, format: "groupId:artifactId:version", version is optional, the default use of 0.0.1
-          --parent string     Maven top POM dependency, format: "groupId:artifactId:version" (default "org.nanoframework:super:0.0.17")
+          --parent string     Maven top POM dependency, format: "groupId:artifactId:version" (default "org.nanoframework:super:x.x.x")
           --path string       The project path by default using the current path (default "...")
       -p, --publish uint      Project default port (default 7000)
       -s, --scheduler         Init a scheduler project of nano framework
