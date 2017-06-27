@@ -68,24 +68,6 @@ projects:
             artifactId: {{.ArtifactId}}-webapp
             version: ${project.version}
 
-    build:
-      plugins:
-        plugin:
-          - groupId: org.apache.maven.plugins
-            artifactId: maven-compiler-plugin
-          - groupId: org.apache.maven.plugins
-            artifactId: maven-source-plugin
-          - groupId: org.apache.maven.plugins
-            artifactId: maven-javadoc-plugin
-          - groupId: org.codehaus.mojo
-            artifactId: findbugs-maven-plugin
-          - groupId: org.apache.maven.plugins
-            artifactId: maven-checkstyle-plugin
-          - groupId: com.mycila
-            artifactId: license-maven-plugin
-          - groupId: org.apache.maven.plugins
-            artifactId: maven-pmd-plugin
-
   {{.ArtifactId}}-common:
     modelVersion: 4.0.0
     parent:
@@ -333,24 +315,6 @@ projects:
           - groupId: {{.GroupId}}
             artifactId: {{.ArtifactId}}-scheduler
             version: ${project.version}
-
-    build:
-      plugins:
-        plugin:
-          - groupId: org.apache.maven.plugins
-            artifactId: maven-compiler-plugin
-          - groupId: org.apache.maven.plugins
-            artifactId: maven-source-plugin
-          - groupId: org.apache.maven.plugins
-            artifactId: maven-javadoc-plugin
-          - groupId: org.codehaus.mojo
-            artifactId: findbugs-maven-plugin
-          - groupId: org.apache.maven.plugins
-            artifactId: maven-checkstyle-plugin
-          - groupId: com.mycila
-            artifactId: license-maven-plugin
-          - groupId: org.apache.maven.plugins
-            artifactId: maven-pmd-plugin
 
   {{.ArtifactId}}-common:
     modelVersion: 4.0.0
