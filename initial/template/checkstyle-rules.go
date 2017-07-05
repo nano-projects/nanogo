@@ -382,7 +382,7 @@ func CheckstyleRules() (*template.Template, error) {
     <module name="RegexpSingleline">
         <metadata name="net.sf.eclipsecs.core.comment" value="Trailing spaces"/>
         <property name="severity" value="error"/>
-        <property name="format" value="\w+\s+$"/>
+        <property name="format" value="\s+$"/>
         <property name="message" value="Line has trailing spaces."/>
     </module>
     <module name="RegexpSingleline">
@@ -430,6 +430,48 @@ func CheckstyleRules() (*template.Template, error) {
         <property name="minimum" value="1"/>
         <property name="fileExtensions" value="java,groovy"/>
         <property name="message" value="There are no @since tags defined for this component's Javadocs."/>
+    </module>
+    <module name="RegexpSingleline">
+        <metadata name="net.sf.eclipsecs.core.comment" value="Before space"/>
+        <property name="severity" value="error"/>
+        <property name="format" value="\w+\{|\)\{"/>
+        <property name="message" value="'{' 前应有空格"/>
+    </module>
+    <module name="RegexpSingleline">
+        <metadata name="net.sf.eclipsecs.core.comment" value="Before multi space"/>
+        <property name="severity" value="error"/>
+        <property name="format" value="\w+\s{2,}\{|\)\s{2,}\{"/>
+        <property name="message" value="'{' 前仅能有一个空格"/>
+    </module>
+    <module name="RegexpSingleline">
+        <metadata name="net.sf.eclipsecs.core.comment" value="if after multi space"/>
+        <property name="severity" value="error"/>
+        <property name="format" value="if\s{2,}\("/>
+        <property name="message" value="'if' 后仅能有一个空格"/>
+    </module>
+    <module name="RegexpSingleline">
+        <metadata name="net.sf.eclipsecs.core.comment" value="For after space"/>
+        <property name="severity" value="error"/>
+        <property name="format" value="for\("/>
+        <property name="message" value="'for' 后应有空格"/>
+    </module>
+    <module name="RegexpSingleline">
+        <metadata name="net.sf.eclipsecs.core.comment" value="For after multi space"/>
+        <property name="severity" value="error"/>
+        <property name="format" value="for\s{2,}\("/>
+        <property name="message" value="'for' 后仅能有一个空格"/>
+    </module>
+    <module name="RegexpSingleline">
+        <metadata name="net.sf.eclipsecs.core.comment" value="While after space"/>
+        <property name="severity" value="error"/>
+        <property name="format" value="while\("/>
+        <property name="message" value="'while' 后应有空格"/>
+    </module>
+    <module name="RegexpSingleline">
+        <metadata name="net.sf.eclipsecs.core.comment" value="While after multi space"/>
+        <property name="severity" value="error"/>
+        <property name="format" value="while\s{2,}\("/>
+        <property name="message" value="'while' 后仅能有一个空格"/>
     </module>
     <module name="SuppressionFilter">
         <property name="file" value="${checkstyle.suppressions.file}"/>
