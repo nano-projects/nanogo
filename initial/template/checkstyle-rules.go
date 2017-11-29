@@ -433,7 +433,7 @@ func CheckstyleRules() (*template.Template, error) {
     </module>
     <module name="RegexpSingleline">
         <metadata name="net.sf.eclipsecs.core.comment" value="Before space"/>
-        <property name="severity" value="error"/>
+        <property name="severity" value="warning"/>
         <property name="format" value="\w+\{|\)\{"/>
         <property name="message" value="'{' 前应有空格"/>
     </module>

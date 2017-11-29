@@ -30,4 +30,7 @@ webRoot/
 *.pid
 .checkstyle
 .fbIncludeFilterFile
+.fbExcludeFilterFile
+.idea
+*.iml
 `

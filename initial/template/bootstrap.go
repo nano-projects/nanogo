@@ -58,6 +58,10 @@ JAVA_OPTS="$JAVA_OPTS -XX:+CMSParallelRemarkEnabled"
 JAVA_OPTS="$JAVA_OPTS -XX:+UseCMSCompactAtFullCollection"
 JAVA_OPTS="$JAVA_OPTS -XX:+UseCMSInitiatingOccupancyOnly"
 JAVA_OPTS="$JAVA_OPTS -XX:CMSInitiatingOccupancyFraction=75"
+# JAVA_OPTS="$JAVA_OPTS -Dcom.sun.management.jmxremote"
+# JAVA_OPTS="$JAVA_OPTS -Dcom.sun.management.jmxremote.ssl=false"
+# JAVA_OPTS="$JAVA_OPTS -Dcom.sun.management.jmxremote.authenticate=false"
+# JAVA_OPTS="$JAVA_OPTS -Dcom.sun.management.jmxremote.port=9999"
 #==============================================================================
 
 #set HOME

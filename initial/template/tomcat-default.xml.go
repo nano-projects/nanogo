@@ -15,8 +15,8 @@
 package template
 
 import (
-	"text/template"
 	"github.com/nano-projects/nanogo/initial/template/license"
+	"text/template"
 )
 
 func TomcatDefaultXml() (*template.Template, error) {
