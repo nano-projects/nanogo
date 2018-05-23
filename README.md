@@ -92,7 +92,7 @@ NanoGo
     Flags:
       -a, --author string   Creation file author
       -n, --name string     The interface or class prefix name
-          --path string     The project root path (default "/Users/yanghe/Works/____Go_Project____/____Workspaces____/src/github.com/nano-projects/nanogo")
+          --path string     The project root path (default "...")
 
     Global Flags:
       -l, --log-level string   Log level (options 'debug', 'info', 'warn', 'error', 'fatal', 'panic') (default "info")
@@ -111,18 +111,18 @@ NanoGo
 
 ###### e.g. 
     
-    ~$ nanogo init -w --path /Users/yanghe/Works/____Go_Project____/____Workspaces____ -n org.nanoframework.nanogo:test
-    create file:  /Users/yanghe/Works/____Go_Project____/____Workspaces____/test/test-common/pom.xml
+    ~$ nanogo init -w --path ____Workspaces____ -n org.nanoframework.nanogo:test
+    create file:  ____Workspaces____/test/test-common/pom.xml
     ...
-    create file:  /Users/yanghe/Works/____Go_Project____/____Workspaces____/test/test-mapper/pom.xml
+    create file:  ____Workspaces____/test/test-mapper/pom.xml
     ...
-    create file:  /Users/yanghe/Works/____Go_Project____/____Workspaces____/test/test-core/pom.xml
+    create file:  ____Workspaces____/test/test-core/pom.xml
     ...
-    create file:  /Users/yanghe/Works/____Go_Project____/____Workspaces____/test/test-webapp-support/pom.xml
+    create file:  ____Workspaces____/test/test-webapp-support/pom.xml
     ...
-    create file:  /Users/yanghe/Works/____Go_Project____/____Workspaces____/test/test-webapp/pom.xml
+    create file:  ____Workspaces____/test/test-webapp/pom.xml
     ...
-    create file:  /Users/yanghe/Works/____Go_Project____/____Workspaces____/test/pom.xml
+    create file:  ____Workspaces____/test/pom.xml
     ...
     
 ##### 项目结构
